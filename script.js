@@ -1,5 +1,6 @@
 //You can edit ALL of the code here
 const container = document.querySelector(".container");
+const button = document.querySelector(".button2");
 
 
 function setup() {
@@ -31,9 +32,17 @@ function makePageForEpisodes(episodeList) {
   })
   container.insertAdjacentHTML("afterbegin", markup.join(''));
 
+}
 
-
-
+function makePageForEpisodes(episodeList) {
+  // const rootElem = document.getElementById("root");
+  // rootElem.textContent = `Got ${episodeList.length} episode(s)`;
+  const markup = [];
+  const list = episodeList;
+  list.forEach(item => {
+    markup.push(helperMarkUp(item))
+  })
+  container.insertAdjacentHTML("afterbegin", markup.join(''));
 
 }
 

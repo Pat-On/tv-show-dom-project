@@ -1,0 +1,23 @@
+{
+  "name": "tv-show-dom-project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.html",
+  "scripts": {
+    "start": "parcel index.html",
+    "build": "parcel build index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Pat-On/tv-show-dom-project.git"
+  },
+  "author": "Patryk",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Pat-On/tv-show-dom-project/issues"
+  },
+  "homepage": "https://github.com/Pat-On/tv-show-dom-project#readme",
+  "devDependencies": {
+    "parcel": "^2.0.0-beta.1"
+  }
+}
