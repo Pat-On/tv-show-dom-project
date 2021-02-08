@@ -1,4 +1,6 @@
 
+
+//!IMPORTANT HOW TO DO ONE MORE SEARCH ON EMPTY
 class SearchView {
     _data;
     _parentElement = document.querySelector(".search");

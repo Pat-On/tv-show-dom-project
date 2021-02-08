@@ -1,9 +1,14 @@
 import * as model from './model.js';
 import episodeViews from "./views/episodesView.js";
-import searchView from "./views/searchView.js"
+import searchView from "./views/searchView.js";
+import numberOfEpisodesView from './views/numberOfEpisodesView.js';
 
 
 episodeViews.render(model.state.episodes);
+
+const controlLoadingPageDefault = function () {
+    episodeViews.render(model.state.episodes);
+}
 
 
 const controlSearchResult = function () {
@@ -15,7 +20,8 @@ const controlSearchResult = function () {
 
     //2 search and rendering search results
     episodeViews.render(model.state.search.results)
-
+    // console.log(model.state.search.results)
+    numberOfEpisodesView.render(model.state.search.results, model.state.episodes)
     model.state.search.results = []
 
 }
@@ -23,6 +29,7 @@ const controlSearchResult = function () {
 
 const init = function () {
     searchView.addHandlerSearch(controlSearchResult);
+    episodeViews.addHandlerEpisode(controlLoadingPageDefault);
 };
 
 init();

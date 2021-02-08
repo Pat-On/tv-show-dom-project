@@ -9,7 +9,12 @@ class EpisodesView {
 
         this._clear();
         this._parentElement.insertAdjacentHTML('afterbegin', markup)
+    }
 
+    addHandlerEpisode(handler) {
+        window.addEventListener('load', function (e) {
+            handler();
+        })
     }
 
     _generateMarkup() {
