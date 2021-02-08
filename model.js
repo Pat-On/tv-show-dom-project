@@ -42,6 +42,9 @@ export const searchResults = function (query) {
     console.log(state.search.results)
 }
 
+
+
+
 const init = function () {
     importAllShows();
     ImportOneShow();

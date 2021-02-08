@@ -2,6 +2,7 @@ import * as model from './model.js';
 import episodeViews from "./views/episodesView.js";
 import searchView from "./views/searchView.js";
 import numberOfEpisodesView from './views/numberOfEpisodesView.js';
+import selectInputView from './views/selectInputView.js'
 
 
 episodeViews.render(model.state.episodes);
@@ -9,6 +10,7 @@ episodeViews.render(model.state.episodes);
 const controlLoadingPageDefault = function () {
     numberOfEpisodesView.render(model.state.episodes, model.state.episodes)
     episodeViews.render(model.state.episodes);
+    selectInputView.render(model.state.episodes);
 }
 
 
