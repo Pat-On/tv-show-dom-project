@@ -8,8 +8,6 @@ export const state = {
     show: {},
 };
 
-
-
 //importing Shows and Episodes
 const importAllShows = function () {
     state.shows = getAllShows();
