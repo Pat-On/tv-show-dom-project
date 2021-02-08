@@ -34,10 +34,10 @@ export const searchResults = function (query) {
     state.search.query = query;
     const data = state.episodes;
 
-    data.forEach(episode => {
+    state.search.results = data.filter(episode => {
         if (episode.summary.toLowerCase().includes(query.toLowerCase())
             || episode.name.toLowerCase().includes(query.toLowerCase()))
-            state.search.results.push(episode);
+            return episode;
     })
     console.log(state.search.results)
 }

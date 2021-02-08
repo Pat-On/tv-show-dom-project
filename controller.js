@@ -7,6 +7,7 @@ import numberOfEpisodesView from './views/numberOfEpisodesView.js';
 episodeViews.render(model.state.episodes);
 
 const controlLoadingPageDefault = function () {
+    numberOfEpisodesView.render(model.state.episodes, model.state.episodes)
     episodeViews.render(model.state.episodes);
 }
 
@@ -14,6 +15,7 @@ const controlLoadingPageDefault = function () {
 const controlSearchResult = function () {
     // 1 search query
     const query = searchView.getQuery();
+    if (query === "") return controlLoadingPageDefault();
     console.log(query)
     if (!query) return;
     model.searchResults(query)
