@@ -12,7 +12,8 @@ class EpisodesView {
     }
 
     addHandlerEpisode(handler) {
-        window.addEventListener('load', function (e) {
+        this._parentElement.addEventListener('change', function (e) {
+            e.preventDefault();
             handler();
         })
     }

@@ -5,17 +5,18 @@ class SelectInputView {
 
     render(data) {
         this._data = data;
-
+        console.log(data)
         const markup = this._generateMarkup();
+        console.log(markup)
         this._clear();
         this._parentElement.insertAdjacentHTML('afterbegin', markup)
     }
 
-    addHandlerEpisode(handler) {
-        this._parentElement.addEventListener('click', function (e) {
-            handler();
-        })
-    }
+    // addHandlerEpisode(handler) {
+    //     this._parentElement.addEventListener('click', function (e) {
+    //         handler();
+    //     })
+    // }
 
     _generateMarkup() {
         const markup = [];
