@@ -19,5 +19,9 @@
   "homepage": "https://github.com/Pat-On/tv-show-dom-project#readme",
   "devDependencies": {
     "parcel": "^2.0.0-beta.1"
+  },
+  "dependencies": {
+    "core-js": "^3.8.3",
+    "regenerator-runtime": "^0.13.7"
   }
 }
