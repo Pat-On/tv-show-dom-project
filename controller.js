@@ -15,7 +15,7 @@ const controlLoadingPageDefault = function () {
 const controlSearchResult = function () {
     // 1 search query
     const query = searchView.getQuery();
-    if (query === "") return controlLoadingPageDefault();
+    if (query === "") return controlLoadingPageDefault(); // Is it efficient?  <LOL> 
     console.log(query)
     if (!query) return;
     model.searchResults(query)
