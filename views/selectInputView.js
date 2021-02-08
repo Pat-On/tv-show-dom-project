@@ -5,12 +5,11 @@ class SelectInputView {
 
     render(data) {
         this._data = data;
-        console.log(data)
         const markup = this._generateMarkup();
-        console.log(markup)
+
         this._clear();
         this._parentElement.insertAdjacentHTML('afterbegin', markup)
-    }
+    };
 
     // addHandlerEpisode(handler) {
     //     this._parentElement.addEventListener('click', function (e) {
@@ -19,7 +18,11 @@ class SelectInputView {
     // }
 
     _generateMarkup() {
-        const markup = [];
+        const markup = [`
+        <option value="none" selected disabled hidden> 
+          Select an Option 
+      </option> `
+        ];
         const episodes = this._data;
         episodes.forEach(item => {
             markup.push(`

@@ -11,8 +11,7 @@ const controlLoadingPageDefault = function () {
     numberOfEpisodesView.render(model.state.episodes, model.state.episodes)
     episodeViews.render(model.state.episodes);
     selectInputView.render(model.state.episodes);
-    console.log(selectInputView)
-    console.log("wtd?")
+
 }
 
 
@@ -32,7 +31,7 @@ const controlSearchResult = function () {
 
 }
 
-selectInputView.render(model.state.episodes);
+// selectInputView.render(model.state.episodes);
 
 
 const init = function () {
