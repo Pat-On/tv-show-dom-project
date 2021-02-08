@@ -6,6 +6,10 @@ export const state = {
     episode: {},
     shows: [],
     show: {},
+    search: {
+        query: '',
+        results: [],
+    },
 };
 
 //importing Shows and Episodes
@@ -24,6 +28,19 @@ const importAllEpisodes = function () {
 const ImportOneEpisode = function () {
     state.episode = getOneEpisode();
 };
+
+
+export const searchResults = function (query) {
+    state.search.query = query;
+    const data = state.episodes;
+
+    data.forEach(episode => {
+        if (episode.summary.toLowerCase().includes(query.toLowerCase())
+            || episode.name.toLowerCase().includes(query.toLowerCase()))
+            state.search.results.push(episode);
+    })
+    console.log(state.search.results)
+}
 
 const init = function () {
     importAllShows();

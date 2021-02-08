@@ -7,6 +7,7 @@ class EpisodesView {
         this._data = data;
         const markup = this._generateMarkup();
 
+        this._clear();
         this._parentElement.insertAdjacentHTML('afterbegin', markup)
 
     }
@@ -26,6 +27,10 @@ class EpisodesView {
         return markup;
     };
 
+
+    _clear() {
+        this._parentElement.innerHTML = "";
+    }
 };
 
 export default new EpisodesView();
