@@ -4,7 +4,10 @@ class EpisodesView {
     _parentElement = document.querySelector(".container");
 
     render(data) {
-        this._data = data;
+        // temporary solution -> if data is not array put it inside the array! 
+        this._data = Array.isArray(data) ? data : [data];
+        // this._data = data;
+        console.log(data)
         const markup = this._generateMarkup();
 
         this._clear();

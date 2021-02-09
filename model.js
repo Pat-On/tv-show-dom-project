@@ -10,6 +10,10 @@ export const state = {
         query: '',
         results: [],
     },
+    selection: {
+        query: "",
+        selected: {},
+    },
 };
 
 //importing Shows and Episodes
@@ -42,6 +46,12 @@ export const searchResults = function (query) {
     console.log(state.search.results)
 }
 
+export const findSelectedEpisode = function (selected) {
+    state.selection.selected = selected;
+    const data = state.episodes;
+
+    state.selection.selected = data.find(item => item.id === selected)
+}
 
 
 
