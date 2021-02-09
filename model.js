@@ -1,4 +1,6 @@
 import { getOneShow, getAllShows } from "./fakeApi/shows.js"
+
+//importing fake episodes
 import { getOneEpisode, getAllEpisodes } from "./fakeApi/episodes.js"
 
 export const state = {
@@ -16,22 +18,40 @@ export const state = {
     },
 };
 
-//importing Shows and Episodes
-const importAllShows = function () {
-    state.shows = getAllShows();
+//import from the real API
+export const importAllEpisodes = async function () {
+    try {
+        const res = await fetch("https://api.tvmaze.com/shows/82/episodes")
+        const data = await res.json()
+        console.log(data) //it is working
+        state.episodes = data.map(item => item)
+        console.log(state.episodes)
+
+        if (!res.ok) throw new Error(`I'm coming from importAllShows${res.status}`)
+        return data
+
+    } catch (err) {
+        throw err;
+    }
 };
 
-const ImportOneShow = function () {
-    state.show = getOneShow();
-};
 
-const importAllEpisodes = function () {
-    state.episodes = getAllEpisodes();
-};
+//importing Shows and Episodes base on "fake API"
+// const importAllShows = function () {
+//     state.shows = getAllShows();
+// };
 
-const ImportOneEpisode = function () {
-    state.episode = getOneEpisode();
-};
+// const ImportOneShow = function () {
+//     state.show = getOneShow();
+// };
+
+// const importAllEpisodes = function () {
+//     state.episodes = getAllEpisodes();
+// };
+
+// const ImportOneEpisode = function () {
+//     state.episode = getOneEpisode();
+// };
 
 
 export const searchResults = function (query) {
@@ -55,11 +75,11 @@ export const findSelectedEpisode = function (selected) {
 
 
 
-const init = function () {
-    importAllShows();
-    ImportOneShow();
-    importAllEpisodes();
-    ImportOneEpisode();
-}
+// const init = function () {
+//     importAllShows();
+//     ImportOneShow();
+//     importAllEpisodes();
+//     ImportOneEpisode(); 
+// }
 
-init();
+// init();
