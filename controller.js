@@ -7,11 +7,18 @@ import selectInputView from './views/selectInputView.js'
 
 episodeViews.render(model.state.episodes);
 
-const controlLoadingPageDefault = function () {
-    numberOfEpisodesView.render(model.state.episodes, model.state.episodes)
-    episodeViews.render(model.state.episodes);
-    selectInputView.render(model.state.episodes);
+const controlLoadingPageDefault = async function () {
+    try {
+        //importing all episodes from API
+        await model.importAllEpisodes();
 
+
+        numberOfEpisodesView.render(model.state.episodes, model.state.episodes)
+        episodeViews.render(model.state.episodes);
+        selectInputView.render(model.state.episodes);
+    } catch (err) {
+        console.error(err);
+    }
 }
 
 const controlSelectedResults = function () {
@@ -29,7 +36,7 @@ const controlSelectedResults = function () {
 const controlSearchResult = function () {
     // 1 search query
     const query = searchView.getQuery();
-    if (query === "") return controlLoadingPageDefault();
+    if (query === "") return episodeViews.render(model.state.episodes); // one more time it is calling fetch
     console.log(query)
     if (!query) return;
     model.searchResults(query)
@@ -48,10 +55,13 @@ const controlSearchResult = function () {
 const init = function () {
     // there is need to reconsider the way how to join each part of the code
     //because the page is loading two times from search results and window load event
-    // searchView.addHandlerSearch(controlSearchResult);
-    episodeViews.addHandlerEpisode(controlLoadingPageDefault);
+    searchView.addHandlerSearch(controlSearchResult);
 
-    // selectInputView.addHandlerEpisode(controlSelectedResults);
+    // episodeViews.addHandlerEpisode(controlLoadingPageDefault);
+
+    controlLoadingPageDefault();
+
+    selectInputView.addHandlerEpisode(controlSelectedResults);
 };
 
 init();

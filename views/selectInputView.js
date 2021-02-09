@@ -13,6 +13,7 @@ class SelectInputView {
 
     addHandlerEpisode(handler) {
         this._parentElement.addEventListener('change', function (e) {
+            e.preventDefault();
             handler();
         })
     }
