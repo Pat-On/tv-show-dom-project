@@ -36,7 +36,9 @@ const controlSelectedResults = function () {
 const controlSearchResult = function () {
     // 1 search query
     const query = searchView.getQuery();
-    if (query === "") return episodeViews.render(model.state.episodes); // one more time it is calling fetch
+
+    if (query === "") return episodeViews.render(model.state.episodes); 
+
     console.log(query)
     if (!query) return;
     model.searchResults(query)
