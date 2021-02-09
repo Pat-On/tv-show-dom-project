@@ -48,10 +48,10 @@ const controlSearchResult = function () {
 const init = function () {
     // there is need to reconsider the way how to join each part of the code
     //because the page is loading two times from search results and window load event
-    searchView.addHandlerSearch(controlSearchResult);
+    // searchView.addHandlerSearch(controlSearchResult);
     episodeViews.addHandlerEpisode(controlLoadingPageDefault);
 
-    selectInputView.addHandlerEpisode(controlSelectedResults);
+    // selectInputView.addHandlerEpisode(controlSelectedResults);
 };
 
 init();

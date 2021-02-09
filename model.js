@@ -16,7 +16,23 @@ export const state = {
     },
 };
 
-//importing Shows and Episodes
+//import from the real API
+const importAllEpisodes = async function () {
+    try {
+        const res = await fetch("https://api.tvmaze.com/shows/82/episodes")
+        const data = await res.json()
+        console.log(data) //it is working
+
+        if (!res.ok) throw new Error(`I'm coming from importAllShows${res.status}`)
+        return data
+
+    } catch (err) {
+        throw err;
+    }
+};
+
+
+//importing Shows and Episodes base on "fake API"
 const importAllShows = function () {
     state.shows = getAllShows();
 };
@@ -25,9 +41,9 @@ const ImportOneShow = function () {
     state.show = getOneShow();
 };
 
-const importAllEpisodes = function () {
-    state.episodes = getAllEpisodes();
-};
+// const importAllEpisodes = function () {
+//     state.episodes = getAllEpisodes();
+// };
 
 const ImportOneEpisode = function () {
     state.episode = getOneEpisode();
