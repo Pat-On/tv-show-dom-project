@@ -21,7 +21,8 @@ export const state = {
 //import from the real API
 export const importAllEpisodes = async function () {
     try {
-        const res = await fetch("https://api.tvmaze.com/shows/82/episodes")
+        // const res = await fetch("https://api.tvmaze.com/shows/82/episodes")
+        const res = await fetch("http://api.tvmaze.com/shows?page=0");
         const data = await res.json()
         console.log(data) //it is working
         state.episodes = data.map(item => item)

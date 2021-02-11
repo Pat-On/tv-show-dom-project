@@ -25,13 +25,22 @@ class EpisodesView {
         const markup = [];
         const episodes = this._data;
         episodes.forEach(item => {
+            // markup.push(`
+            //             <div class="episode">
+            //                 <h2>${item.name} - S${item.season.toString().padStart(2, 0)}E${item.number.toString().padStart(2, 0)}</h2>
+            //                 <img src="${item.image.medium}" alt="">
+            //                 ${item.summary}
+            //                 <a href=${item.url}>Check the source</a>
+            //             </div>
+            //             `)
             markup.push(`
                         <div class="episode">
-                            <h2>${item.name} - S${item.season.toString().padStart(2, 0)}E${item.number.toString().padStart(2, 0)}</h2>
+                            <h2>${item.name}</h2>
                             <img src="${item.image.medium}" alt="">
                             ${item.summary}
                             <a href=${item.url}>Check the source</a>
-                        </div>`)
+                        </div>
+                        `)
         })
         return markup;
     };
