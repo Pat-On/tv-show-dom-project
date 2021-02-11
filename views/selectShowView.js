@@ -28,12 +28,12 @@ class SelectShowView {
     _generateMarkup() {
         const markup = [`
         <option value="0" selected> 
-          Select all episodes
-      </option> `
+            Select Show
+        </option> `
         ];
         const episodes = this._data;
         episodes.forEach(item => {
-            markup.push(`<option value="${item.id}">$E$ - ${item.name}</option>`)
+            markup.push(`<option value="${item.id}">${item.name}</option>`)
         })
         return markup;
     };

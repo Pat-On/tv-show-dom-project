@@ -28,7 +28,7 @@ class SelectInputView {
     _generateMarkup() {
         const markup = [`
         <option value="0" selected> 
-          Select all episodes
+          Select Episode
       </option> `
         ];
         const episodes = this._data;
