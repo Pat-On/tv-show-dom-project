@@ -1,8 +1,11 @@
 import * as model from "./model.js";
 import episodeViews from "./views/episodesView.js";
 import searchView from "./views/searchView.js";
-import numberOfEpisodesView from "./views/numberOfEpisodesView.js";
-import selectInputView from "./views/selectInputView.js";
+
+import numberOfEpisodesView from './views/numberOfEpisodesView.js';
+import selectInputView from './views/selectInputView.js';
+import selectShowView from './views/selectShowView.js';
+
 
 import "core-js/stable";
 import "regenerator-runtime/runtime";
@@ -10,17 +13,20 @@ import "regenerator-runtime/runtime";
 episodeViews.render(model.state.episodes);
 
 const controlLoadingPageDefault = async function () {
-  try {
-    //importing all episodes from API
-    await model.importAllEpisodes();
 
-    numberOfEpisodesView.render(model.state.episodes, model.state.episodes);
-    episodeViews.render(model.state.episodes);
-    selectInputView.render(model.state.episodes);
-  } catch (err) {
-    console.error(err);
-  }
-};
+    try {
+        //importing all episodes from API
+        await model.importAllEpisodes();
+
+        selectShowView.render(model.state.episodes)
+        numberOfEpisodesView.render(model.state.episodes, model.state.episodes)
+        episodeViews.render(model.state.episodes);
+        selectInputView.render(model.state.episodes);
+    } catch (err) {
+        console.error(err);
+    }
+}
+
 
 const controlSelectedResults = function () {
   const query = selectInputView.getQuery();
@@ -32,9 +38,26 @@ const controlSelectedResults = function () {
   episodeViews.render(model.state.selection.selected);
 };
 
+const controlSelectedShowResults = function () {
+    const query = selectShowView.getQuery();
+    // console.log(model.state.episodes)
+    if (query === 0) return episodeViews.render(model.state.episodes);
+    console.log(query)
+    model.findSelectedEpisode(query);
+    console.log(model.state.selection.selected);
+    episodeViews.render(model.state.selection.selected);
+
+}
+
+
+
 const controlSearchResult = function () {
-  // 1 search query
-  const query = searchView.getQuery();
+
+    // 1 search query
+    const query = searchView.getQuery();
+
+    if (query === "") return episodeViews.render(model.state.episodes);
+
 
   if (query === "") return episodeViews.render(model.state.episodes);
 

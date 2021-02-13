@@ -1,7 +1,7 @@
 
-class SelectInputView {
+class SelectShowView {
     _data;
-    _parentElement = document.querySelector(".select__input");
+    _parentElement = document.querySelector(".select__show__input");
 
     render(data) {
         this._data = data;
@@ -28,13 +28,12 @@ class SelectInputView {
     _generateMarkup() {
         const markup = [`
         <option value="0" selected> 
-          Select Episode
-      </option> `
+            Select Show
+        </option> `
         ];
         const episodes = this._data;
         episodes.forEach(item => {
-            // markup.push(`<option value="${item.id}">${item.season.toString().padStart(2, 0)}E${item.number.toString().padStart(2, 0)} - ${item.name}</option>`)
-            markup.push(`<option value="${item.id}">E$ - ${item.name}</option>`)
+            markup.push(`<option value="${item.id}">${item.name}</option>`)
         })
         return markup;
     };
@@ -45,4 +44,4 @@ class SelectInputView {
     }
 };
 
-export default new SelectInputView();
+export default new SelectShowView();
