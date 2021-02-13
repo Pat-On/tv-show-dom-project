@@ -3,6 +3,8 @@ import { async } from "regenerator-runtime";
 
 //importing fake episodes
 import { getOneEpisode, getAllEpisodes } from "./fakeApi/episodes.js";
+import "core-js/stable";
+import "regenerator-runtime/runtime";
 
 export const state = {
   episodes: [],
