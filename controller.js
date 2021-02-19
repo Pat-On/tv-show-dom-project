@@ -8,6 +8,7 @@ import numberOfEpisodesView from "./views/numberOfEpisodesView.js";
 import selectEpisodeView from "./views/selectEpisodeView.js";
 import selectShowView from "./views/selectShowView.js";
 import searchView from "./views/searchView.js";
+import episodesView from "./views/episodesView.js";
 
 //ASYNC FUNCTION
 const controlLoadingPageDefault = async function () {
@@ -16,7 +17,7 @@ const controlLoadingPageDefault = async function () {
     await model.importAllEpisodes();
 
     selectShowView.render(model.state.shows);
-    numberOfEpisodesView.render(model.state.shows, model.state.shows);
+    // numberOfEpisodesView.render(model.state.shows, model.state.shows);
     showsView.render(model.state.shows);
     selectEpisodeView.render(model.state.episodes);
   } catch (err) {
@@ -38,7 +39,7 @@ const controlSelectedResults = async function () {
       showsView.render(model.state.shows);
       return;
     }
-
+    numberOfEpisodesView.render(model.state.episodes, model.state.episodes);
     model.findSelectedShow(query);
     episodeViews.render(model.state.episodes);
     selectEpisodeView.render(model.state.episodes);
@@ -51,9 +52,13 @@ const controlSelectedResults = async function () {
 // !TODO I have refactor this to add events to the option in select menu and add event to it
 const controlSelectedShowResults = function () {
   //returning value of parent element from the selectShowView
-  const query = selectEpisodeView.getQuery();
+  const query = +selectEpisodeView.getQuery();
 
-  if (query === 0) return showsView.render(model.state.episodes);
+  if (query === 0) {
+    // console.log(model.state.episodes);
+    episodesView.render(model.state.episodes);
+    return;
+  }
 
   model.findSelectedEpisode(query);
   episodeViews.render(model.state.selection.episodes.selected);
@@ -66,7 +71,7 @@ const controlSearchResult = function () {
   if (query === "") {
     showsView.render(model.state.shows);
     model.state.search.results = [];
-    numberOfEpisodesView.render(model.state.shows, model.state.shows);
+    // numberOfEpisodesView.render(model.state.shows, model.state.shows);
     return;
   }
 
@@ -76,7 +81,7 @@ const controlSearchResult = function () {
   //2 search and rendering search results
   showsView.render(model.state.search.results);
 
-  numberOfEpisodesView.render(model.state.search.results, model.state.shows);
+  // numberOfEpisodesView.render(model.state.search.results, model.state.shows);
   model.state.search.results = [];
 };
 
