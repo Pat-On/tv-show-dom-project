@@ -1,6 +1,6 @@
 // Description: This class is responsible for rendering all episodes in present form on the main page.
 
-class EpisodesView {
+class ShowsView {
   _data;
   _parentElement = document.querySelector(".container");
 
@@ -32,24 +32,22 @@ class EpisodesView {
     const markup = [];
     const episodes = this._data;
     episodes.forEach((item) => {
-      markup.push(`
-                  <div class="episode">
-                      <h2>${item.name} - S${item.season
-        .toString()
-        .padStart(2, 0)}E${item.number.toString().padStart(2, 0)}</h2>
-                      <img src="${item.image.medium}" alt="">
-                      ${item.summary}
-                      <a href=${item.url}>Check the source</a>
-                  </div>
-                  `);
       // markup.push(`
-      //                   <div class="episode">
-      //                       <h2>${item.name}</h2>
-      //                       <img src="${item.image.medium}" alt="">
-      //                       ${item.summary}
-      //                       <a href=${item.url}>Check the source</a>
-      //                   </div>
-      //                   `);
+      //             <div class="episode">
+      //                 <h2>${item.name} - S${item.season.toString().padStart(2, 0)}E${item.number.toString().padStart(2, 0)}</h2>
+      //                 <img src="${item.image.medium}" alt="">
+      //                 ${item.summary}
+      //                 <a href=${item.url}>Check the source</a>
+      //             </div>
+      //             `)
+      markup.push(`
+                        <div class="episode">
+                            <h2>${item.name}</h2>
+                            <img src="${item.image.medium}" alt="">
+                            ${item.summary}
+                            <a href=${item.url}>Check the source</a>
+                        </div>
+                        `);
     });
     return markup;
   }
@@ -60,4 +58,4 @@ class EpisodesView {
   }
 }
 
-export default new EpisodesView();
+export default new ShowsView();
