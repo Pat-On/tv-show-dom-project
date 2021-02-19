@@ -3,7 +3,7 @@ import episodeViews from "./views/episodesView.js";
 import searchView from "./views/searchView.js";
 
 import numberOfEpisodesView from "./views/numberOfEpisodesView.js";
-import selectInputView from "./views/selectInputView.js";
+import selectEpisodeView from "./views/selectEpisodeView.js";
 import selectShowView from "./views/selectShowView.js";
 import showsView from "./views/showsView.js";
 
@@ -19,7 +19,7 @@ const controlLoadingPageDefault = async function () {
     selectShowView.render(model.state.shows);
     numberOfEpisodesView.render(model.state.shows, model.state.shows);
     showsView.render(model.state.shows);
-    selectInputView.render(model.state.episodes);
+    selectEpisodeView.render(model.state.episodes);
   } catch (err) {
     console.error(err);
   }
@@ -36,7 +36,7 @@ const controlSelectedResults = async function () {
 
     //!IMPORTANT is this if statement following the MVC pattern? or it need to be added to model?
     if (query === 0) {
-      selectInputView.render([]); //empty array to clear the html temportary !TODO
+      selectEpisodeView.render([]); //empty array to clear the html temportary !TODO
       showsView.render(model.state.shows);
       return;
     }
@@ -45,7 +45,7 @@ const controlSelectedResults = async function () {
     model.findSelectedShow(query);
     console.log(model.state.selection.shows.selected);
     episodeViews.render(model.state.episodes);
-    selectInputView.render(model.state.episodes);
+    selectEpisodeView.render(model.state.episodes);
   } catch (err) {
     console.error(err);
   }
@@ -55,7 +55,7 @@ const controlSelectedResults = async function () {
 // !TODO I have refactor this to add events to the option in select menu and add event to it
 const controlSelectedShowResults = function () {
   //   //returning value of parent element from the selectShowView
-  const query = selectInputView.getQuery();
+  const query = selectEpisodeView.getQuery();
   // console.log(model.state.episodes)
   if (query === 0) return showsView.render(model.state.episodes);
   console.log(query);
@@ -86,7 +86,7 @@ const controlSearchResult = function () {
   model.state.search.results = [];
 };
 
-// selectInputView.render(model.state.episodes);
+// selectEpisodeView.render(model.state.episodes);
 
 //init function which is going to lunch all needed function following the MVC and Observer patter
 const init = function () {
@@ -96,13 +96,13 @@ const init = function () {
 
   //this function controlling the selection from the choose an show
   // selectShowView.addHandlerEpisode(controlSelectedShowResults);
-  // selectInputView.addHandlerEpisode(controlSelectedResults);
+  // selectEpisodeView.addHandlerEpisode(controlSelectedResults);
   // episodeViews.addHandlerEpisode(controlLoadingPageDefault);
 
   controlLoadingPageDefault();
 
   selectShowView.addHandlerEpisode(controlSelectedResults);
-  selectInputView.addHandlerEpisode(controlSelectedShowResults);
+  selectEpisodeView.addHandlerEpisode(controlSelectedShowResults);
 };
 
 init();

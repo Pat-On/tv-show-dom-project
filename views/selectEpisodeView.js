@@ -1,9 +1,9 @@
 //!TODO There is need to change the name of this class because this one is related to the select menu for select__input dedicated
 // for the episodes of the chosen tv show
 
-class SelectInputView {
+class SelectEpisodeView {
   _data;
-  _parentElement = document.querySelector(".select__input");
+  _parentElement = document.querySelector(".select__episode__input");
 
   render(data) {
     this._data = data;
@@ -51,4 +51,4 @@ class SelectInputView {
   }
 }
 
-export default new SelectInputView();
+export default new SelectEpisodeView();
