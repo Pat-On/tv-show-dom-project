@@ -26,7 +26,6 @@ const controlLoadingPageDefault = async function () {
 };
 
 //ASYNC FUNCTION
-
 const controlSelectedResults = async function () {
   try {
     //!TODO change the adding value to model: have to go to model!
@@ -40,7 +39,7 @@ const controlSelectedResults = async function () {
 
     console.log(query);
     model.findSelectedShow(query);
-    console.log(model.state.selection.selected);
+    console.log(model.state.selection.shows.selected);
     episodeViews.render(model.state.episodes);
     selectInputView.render(model.state.episodes);
   } catch (err) {
@@ -54,12 +53,11 @@ const controlSelectedShowResults = function () {
   //   //returning value of parent element from the selectShowView
   const query = selectInputView.getQuery();
   // console.log(model.state.episodes)
-
-  if (query === 0) return showsView.render(model.state.shows);
+  if (query === 0) return showsView.render(model.state.episodes);
   console.log(query);
-  // model.findSelectedEpisode(query);
-  console.log(model.state.selection.selected);
-  // showsView.render(model.state.selection.selected);
+  model.findSelectedEpisode(query);
+  console.log(model.state.selection.episodes.selected);
+  showsView.render(model.state.selection.episodes.selected);
 };
 
 const controlSearchResult = function () {

@@ -17,8 +17,14 @@ export const state = {
     results: [],
   },
   selection: {
-    query: "",
-    selected: {},
+    shows: {
+      query: "",
+      selected: {},
+    },
+    episodes: {
+      query: "",
+      selected: {},
+    },
   },
 };
 
@@ -99,12 +105,22 @@ export const searchResults = function (query) {
   // console.log(state.search.results);
 };
 
+//!TODO refactor this to function in one
+
 //function which is going to be used in select menu. Object is selected by ID of the object
-export const findSelectedShow = function (selected) {
-  state.selection.selected = selected;
+export const findSelectedShow = function (query) {
+  state.selection.shows.query = query;
   const data = state.shows;
 
-  state.selection.selected = data.find((item) => item.id === selected);
+  state.selection.shows.selected = data.find((item) => item.id === query);
+};
+
+//function which is going to be used in select menu - episodes to find selected episode by ID
+export const findSelectedEpisode = function (query) {
+  state.selection.episodes.query = query;
+  const data = state.episodes;
+
+  state.selection.episodes.selected = data.find((item) => item.id === query);
 };
 
 // const init = function () {
