@@ -44,9 +44,9 @@ export const importAllEpisodes = async function () {
 };
 
 //importing base on ID the episodes of the show
-export const importEpisodesOfChosenShow = async function () {
+export const importEpisodesOfChosenShow = async function (id) {
   try {
-    const id = state.selection.query;
+    state.selection.query = id;
     console.log(id);
     //guard function to the 0 from the id value - id value 0 no exist!
     //this value is used to render shows on the page
@@ -100,7 +100,7 @@ export const searchResults = function (query) {
 };
 
 //function which is going to be used in select menu. Object is selected by ID of the object
-export const findSelectedEpisode = function (selected) {
+export const findSelectedShow = function (selected) {
   state.selection.selected = selected;
   const data = state.shows;
 

@@ -29,16 +29,17 @@ const controlLoadingPageDefault = async function () {
 
 const controlSelectedResults = async function () {
   try {
-    const query = (model.state.selection.query = selectShowView.getQuery());
+    //!TODO change the adding value to model: have to go to model!
+    const query = selectShowView.getQuery();
     // console.log(model.state.episodes)
-    await model.importEpisodesOfChosenShow();
+    await model.importEpisodesOfChosenShow(query);
     await console.log(model.state.episodes);
 
     //!IMPORTANT is this if statement following the MVC pattern? or it need to be added to model?
     if (query === 0) return showsView.render(model.state.shows);
 
     console.log(query);
-    model.findSelectedEpisode(query);
+    model.findSelectedShow(query);
     console.log(model.state.selection.selected);
     episodeViews.render(model.state.episodes);
     selectInputView.render(model.state.episodes);
