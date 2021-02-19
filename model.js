@@ -57,7 +57,7 @@ export const importEpisodesOfChosenShow = async function (id) {
     //guard function to the 0 from the id value - id value 0 no exist!
     //this value is used to render shows on the page
     if (id === 0) return;
-    const res = await fetch(`http://api.tvmaze.com/shows/${id}/episodes`);
+    const res = await fetch(`https://api.tvmaze.com/shows/${id}/episodes`);
     const data = await res.json();
     console.log(state);
     state.episodes = data.map((item) => item);
