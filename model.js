@@ -64,6 +64,8 @@ export const importEpisodesOfChosenShow = async function (id) {
   }
 };
 
+//TODO in next step searchResults() methods is going to be replace by API search option
+
 // search results for the searchView - ".search".
 //function is looking for the looking word inside the description of episode (summary) and the (name)
 export const searchResults = function (query) {

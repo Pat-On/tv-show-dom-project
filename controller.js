@@ -17,7 +17,6 @@ const controlLoadingPageDefault = async function () {
     await model.importAllEpisodes();
 
     selectShowView.render(model.state.shows);
-    // numberOfEpisodesView.render(model.state.shows, model.state.shows);
     showsView.render(model.state.shows);
     selectEpisodeView.render(model.state.episodes);
   } catch (err) {
@@ -28,9 +27,7 @@ const controlLoadingPageDefault = async function () {
 //ASYNC FUNCTION
 const controlSelectedResults = async function () {
   try {
-    //!TODO change the adding value to model: have to go to model!
     const query = selectShowView.getQuery();
-    // console.log(model.state.episodes)
     await model.importEpisodesOfChosenShow(query);
 
     //!IMPORTANT is this if statement following the MVC pattern? or it need to be added to model?
@@ -55,7 +52,6 @@ const controlSelectedShowResults = function () {
   const query = +selectEpisodeView.getQuery();
 
   if (query === 0) {
-    // console.log(model.state.episodes);
     episodesView.render(model.state.episodes);
     return;
   }
@@ -71,7 +67,6 @@ const controlSearchResult = function () {
   if (query === "") {
     showsView.render(model.state.shows);
     model.state.search.results = [];
-    // numberOfEpisodesView.render(model.state.shows, model.state.shows);
     return;
   }
 
@@ -81,7 +76,6 @@ const controlSearchResult = function () {
   //2 search and rendering search results
   showsView.render(model.state.search.results);
 
-  // numberOfEpisodesView.render(model.state.search.results, model.state.shows);
   model.state.search.results = [];
 };
 
