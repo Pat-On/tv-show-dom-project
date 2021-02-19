@@ -17,8 +17,7 @@ class NumberOfEpisodesView {
   }
 
   _generateMarkup() {
-    // console.log(searched)
-    return `Displaying ${this._searchedNumber.length}/${this._totalNumber.length}`;
+    return `Displaying ${this._searchedNumber.length}/${this._totalNumber.length} episodes`;
   }
 
   _clear() {
