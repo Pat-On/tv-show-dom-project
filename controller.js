@@ -35,7 +35,7 @@ const controlSelectedResults = async function () {
 
     //!IMPORTANT is this if statement following the MVC pattern? or it need to be added to model?
     if (query === 0) {
-      selectEpisodeView.render([]); //empty array to clear the html temportary !TODO
+      selectEpisodeView.render([]); //empty array to clear the html temporary !TODO
       showsView.render(model.state.shows);
       return;
     }
