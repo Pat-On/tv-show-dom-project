@@ -33,7 +33,7 @@ export const importAllEpisodes = async function () {
     //console log checking how many time episodes were wetched
     console.log("Fetching model - importAllEpisodes");
     // console.log(data); //it is working
-    state.episodes = data.map((item) => item);
+    state.shows = data.map((item) => item);
     // console.log(state.episodes);
 
     if (!res.ok) throw new Error(`I'm coming from importAllShows${res.status}`);
@@ -72,7 +72,7 @@ export const importEpisodesOfChosenShow = async function () {
 //function is looking for the looking word inside the description of episode (summary) and the (name)
 export const searchResults = function (query) {
   state.search.query = query;
-  const data = state.episodes;
+  const data = state.shows;
 
   state.search.results = data.filter((episode) => {
     if (
@@ -87,7 +87,7 @@ export const searchResults = function (query) {
 //function which is going to be used in select menu. Object is selected by ID of the object
 export const findSelectedEpisode = function (selected) {
   state.selection.selected = selected;
-  const data = state.episodes;
+  const data = state.shows;
 
   state.selection.selected = data.find((item) => item.id === selected);
 };

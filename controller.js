@@ -15,10 +15,10 @@ const controlLoadingPageDefault = async function () {
     //importing all episodes from API
     await model.importAllEpisodes();
 
-    selectShowView.render(model.state.episodes);
-    numberOfEpisodesView.render(model.state.episodes, model.state.episodes);
-    showsView.render(model.state.episodes);
-    selectInputView.render(model.state.episodes);
+    selectShowView.render(model.state.shows);
+    numberOfEpisodesView.render(model.state.shows, model.state.shows);
+    showsView.render(model.state.shows);
+    selectInputView.render(model.state.shows);
   } catch (err) {
     console.error(err);
   }
@@ -28,7 +28,7 @@ const controlSelectedResults = function () {
   const query = selectInputView.getQuery();
   // console.log(model.state.episodes)
   //!IMPORTANT is this if statement following the MVC pattern? or it need to be added to model?
-  if (query === 0) return showsView.render(model.state.episodes);
+  if (query === 0) return showsView.render(model.state.shows);
   console.log(query);
   model.findSelectedEpisode(query);
   console.log(model.state.selection.selected);
@@ -41,7 +41,7 @@ const controlSelectedShowResults = function () {
   const query = selectShowView.getQuery();
   // console.log(model.state.episodes)
 
-  if (query === 0) return showsView.render(model.state.episodes);
+  if (query === 0) return showsView.render(model.state.shows);
   console.log(query);
   model.findSelectedEpisode(query);
   console.log(model.state.selection.selected);
@@ -53,9 +53,9 @@ const controlSearchResult = function () {
   const query = searchView.getQuery();
 
   if (query === "") {
-    showsView.render(model.state.episodes);
+    showsView.render(model.state.shows);
     model.state.search.results = [];
-    numberOfEpisodesView.render(model.state.episodes, model.state.episodes);
+    numberOfEpisodesView.render(model.state.shows, model.state.shows);
     return;
   }
 
@@ -66,7 +66,7 @@ const controlSearchResult = function () {
   //2 search and rendering search results
   showsView.render(model.state.search.results);
   // console.log(model.state.search.results)
-  numberOfEpisodesView.render(model.state.search.results, model.state.episodes);
+  numberOfEpisodesView.render(model.state.search.results, model.state.shows);
   model.state.search.results = [];
 };
 
