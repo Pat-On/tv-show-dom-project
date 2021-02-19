@@ -10,6 +10,7 @@ import showsView from "./views/showsView.js";
 import "core-js/stable";
 import "regenerator-runtime/runtime";
 
+//ASYNC FUNCTION
 const controlLoadingPageDefault = async function () {
   try {
     //importing all episodes from API
@@ -18,34 +19,46 @@ const controlLoadingPageDefault = async function () {
     selectShowView.render(model.state.shows);
     numberOfEpisodesView.render(model.state.shows, model.state.shows);
     showsView.render(model.state.shows);
-    selectInputView.render(model.state.shows);
+    selectInputView.render(model.state.episodes);
   } catch (err) {
     console.error(err);
   }
 };
 
-const controlSelectedResults = function () {
-  const query = selectInputView.getQuery();
-  // console.log(model.state.episodes)
-  //!IMPORTANT is this if statement following the MVC pattern? or it need to be added to model?
-  if (query === 0) return showsView.render(model.state.shows);
-  console.log(query);
-  model.findSelectedEpisode(query);
-  console.log(model.state.selection.selected);
-  showsView.render(model.state.selection.selected);
+//ASYNC FUNCTION
+
+const controlSelectedResults = async function () {
+  try {
+    const query = (model.state.selection.query = selectShowView.getQuery());
+    // console.log(model.state.episodes)
+    await model.importEpisodesOfChosenShow();
+    await console.log(model.state.episodes);
+
+    //!IMPORTANT is this if statement following the MVC pattern? or it need to be added to model?
+    if (query === 0) return showsView.render(model.state.shows);
+
+    console.log(query);
+    model.findSelectedEpisode(query);
+    console.log(model.state.selection.selected);
+    episodeViews.render(model.state.episodes);
+    selectInputView.render(model.state.episodes);
+  } catch (err) {
+    console.error(err);
+  }
 };
 
 //function which is going to control chosen show and render it on web plus change the possible episodes to choose
+// !TODO I have refactor this to add events to the option in select menu and add event to it
 const controlSelectedShowResults = function () {
   //   //returning value of parent element from the selectShowView
-  const query = selectShowView.getQuery();
+  const query = selectInputView.getQuery();
   // console.log(model.state.episodes)
 
   if (query === 0) return showsView.render(model.state.shows);
   console.log(query);
-  model.findSelectedEpisode(query);
+  // model.findSelectedEpisode(query);
   console.log(model.state.selection.selected);
-  showsView.render(model.state.selection.selected);
+  // showsView.render(model.state.selection.selected);
 };
 
 const controlSearchResult = function () {
@@ -79,13 +92,14 @@ const init = function () {
   searchView.addHandlerSearch(controlSearchResult);
 
   //this function controlling the selection from the choose an show
-  selectShowView.addHandlerEpisode(controlSelectedShowResults);
-
+  // selectShowView.addHandlerEpisode(controlSelectedShowResults);
+  // selectInputView.addHandlerEpisode(controlSelectedResults);
   // episodeViews.addHandlerEpisode(controlLoadingPageDefault);
 
   controlLoadingPageDefault();
 
-  selectInputView.addHandlerEpisode(controlSelectedResults);
+  selectShowView.addHandlerEpisode(controlSelectedResults);
+  selectInputView.addHandlerEpisode(controlSelectedShowResults);
 };
 
 init();
