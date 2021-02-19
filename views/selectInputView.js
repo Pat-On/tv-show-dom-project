@@ -35,7 +35,13 @@ class SelectInputView {
     const episodes = this._data;
     episodes.forEach((item) => {
       // markup.push(`<option value="${item.id}">${item.season.toString().padStart(2, 0)}E${item.number.toString().padStart(2, 0)} - ${item.name}</option>`)
-      markup.push(`<option value="${item.id}"> ${item.name}</option>`);
+      markup.push(
+        `<option value="${item.id}"> S${item.season
+          .toString()
+          .padStart(2, 0)}E${item.number.toString().padStart(2, 0)} ${
+          item.name
+        }</option>`
+      );
     });
     return markup.join("");
   }
