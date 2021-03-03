@@ -35,7 +35,7 @@ class EpisodesView {
                       <h2>${item.name} - S${item.season
         .toString()
         .padStart(2, 0)}E${item.number.toString().padStart(2, 0)}</h2>
-                      <img src="${item.image.medium}" alt="">
+                      <img src="${item.image?.medium}" alt="">
                       <p>${item.summary}<p>
                   </div>
                   `);
