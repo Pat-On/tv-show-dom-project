@@ -28,13 +28,17 @@ export const state = {
 //import from the real API Temporary it is only set up to page=0
 // !TODO later on I need to implement the logic which is going to fetch more pages dependent from the user request
 // and divide the data 240 episodes for 60 or 30 on page?
-export const importAllEpisodes = async function () {
+export const importAllEpisodes = async function (apiPageNumber) {
   try {
-    const res = await fetch("https://api.tvmaze.com/shows?page=0");
+//teorteticly it should work
+    const res = await fetch(
+      `https://api.tvmaze.com/shows?page=${apiPageNumber}`
+    );
     const data = await res.json();
     console.log("Fetching model - importAllEpisodes");
     //!TODO modify it in the way that is going to fetch the pages what we are going to provide to the function
-    state.shows = data.map((item) => item);
+    //code changed for push not to all the time overwritting array
+    state.shows.push(...data);
 
     if (!res.ok) throw new Error(`I'm coming from importAllShows${res.status}`);
     return data;
@@ -108,25 +112,54 @@ const API_PER_PAGE = 100;
 // if we're this close to the end of the list, get the next page
 const THRESHOLD_PRE_FETCH = 200;
 
-async function selectPage(pageNumber, itemsPerPage) {
+export async function selectPage(pageNumber, itemsPerPage) {
   //calculating the index of the object rendered on the page -
   const startIndex = (pageNumber - 1) * itemsPerPage; // 0 * 40 = index 0
   const endIndex = pageNumber * itemsPerPage; //1 * 40 = 40 index
 
   //checking which episode is going to be fetched base on endIndex and API_PER_PAGE
-  if (endIndex > _allShows.length) {
+  if (endIndex > state.shows.length) {
     console.log("fetch");
     //!TODO FIX FETCH
-    await fecthPage(Math.floor(endIndex / API_PER_PAGE));
+    await importAllEpisodes(Math.floor(endIndex / API_PER_PAGE));
   }
 
   //lenghts of the all fetched shows compare to the end index from the page plus
-  if (endIndex + THRESHOLD_PRE_FETCH > _allShows.length) {
+  if (endIndex + THRESHOLD_PRE_FETCH > state.shows.length) {
     console.log("pre-fetching");
-    // plus one because we need new page not what we haqve on page
+    // plus one because we need new page not what we have on page
     //!TODO FIX FETCH
-    fecthPage(Math.floor(endIndex / API_PER_PAGE) + 1);
+    await importAllEpisodes(Math.floor(endIndex / API_PER_PAGE) + 1);
   }
 
   return _allShows.slice(startIndex, endIndex);
+}
+
+//function which is calculating the number of the page from the number of episodes on page
+
+//helper function with their variables!IMPORTANT 
+const NAV_PAGES_LIMIT = 5;
+const ITEMS_PER_PAGE = 40;
+
+let _firstPage = 1;
+let _lastPage = NAV_PAGES_LIMIT;
+
+//jump function << 1 2 3 4 5 >>
+function getNextOrPrevPage(linkText) {
+  if (linkText === "<<" && _firstPage !== 1) {
+    _lastPage = _firstPage - 1;
+    const firstPage = _firstPage - NAV_PAGES_LIMIT;
+    _firstPage = firstPage < 1 ? 1 : firstPage;
+    return _firstPage;
+  }
+
+  if (linkText === ">>") {
+    _firstPage = _lastPage + 1;
+    _lastPage = _firstPage + NAV_PAGES_LIMIT - 1;
+    return _firstPage;
+  }
+}
+
+export function createPaginationListItem(pageNum) {
+  
 }

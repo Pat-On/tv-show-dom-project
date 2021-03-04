@@ -15,9 +15,15 @@ class PaginationView {
   }
 
   addHandlerPagination(handler) {
-    this._parentElement.addEventListener("change", function (e) {
+    this._parentElementTOP.addEventListener("click", function (e) {
       e.preventDefault();
-      handler();
+      //I'm going to pass to handler the value of inner text, what is easier solution than creating to getQuery
+      //!think over it
+      handler(e.target.innerText);
+    });
+    this._parentElementBOTTOM.addEventListener("click", function (e) {
+      e.preventDefault();
+      handler(e.target.innerText);
     });
   }
 
@@ -31,20 +37,30 @@ class PaginationView {
   _generateMarkup() {
     const markup = [
       `
-        <option value="0" selected> 
-          Select Episode
-      </option> `,
+        <li>
+            <a class="page-link" href="#"><<</a>
+        </li>
+        `,
     ];
-    const episodes = this._data;
-    episodes.forEach((item) => {
+    const pagination = this._data;
+
+    pagination.forEach((item) => {
       markup.push(
-        `<option value="${item.id}"> S${item.season
-          .toString()
-          .padStart(2, 0)}E${item.number.toString().padStart(2, 0)} ${
-          item.name
-        }</option>`
+        `
+        <li>
+            <a class="page-link" href="#">${item}</a>
+        </li>
+        `
       );
     });
+
+    markup.push(
+      `
+        <li>
+            <a class="page-link" href="#">>></a>
+        </li>
+        `
+    );
     return markup.join("");
   }
 

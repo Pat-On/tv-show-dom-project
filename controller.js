@@ -10,11 +10,13 @@ import selectShowView from "./views/selectShowView.js";
 import searchView from "./views/searchView.js";
 import episodesView from "./views/episodesView.js";
 
+import paginationView from "./views/paginationView.js";
+
 //ASYNC FUNCTION
 const controlLoadingPageDefault = async function () {
   try {
     //importing all episodes from API
-    await model.importAllEpisodes();
+    await model.importAllEpisodes(1);
 
     selectShowView.render(model.state.shows);
     showsView.render(model.state.shows);
@@ -87,6 +89,9 @@ const init = function () {
   searchView.addHandlerSearch(controlSearchResult);
   selectShowView.addHandlerEpisode(controlSelectedResults);
   selectEpisodeView.addHandlerEpisode(controlSelectedShowResults);
+
+  //!TODO: <<<<<<<<<<<<<TESTING>>>>>>>>>>>>>>>>>
+  paginationView.render([1, 2, 3, 4, 5]);
 };
 
 init();
