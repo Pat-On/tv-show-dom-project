@@ -8,6 +8,10 @@ class PaginationView {
   _parentElementBOTTOM = document.querySelector(".nav_ul--bottom");
 
   render(start, end) {
+    if (start === undefined || end === undefined) {
+      this._clear();
+      return;
+    }
     this._dataStartPaginationNumber = start;
     this._dataEndPaginationNumber = end;
     const markup = [...this._generateMarkup()].join("");

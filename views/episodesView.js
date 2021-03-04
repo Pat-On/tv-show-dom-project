@@ -7,6 +7,10 @@ class EpisodesView {
   //render function which taking the fetched data end render the episodes
   render(data) {
     // temporary solution -> if data is not array put it inside the array!
+    // if (data === undefined) {
+    //   this._clear();
+    //   return;
+    // }
     this._data = Array.isArray(data) ? data : [data];
 
     // rendering the episodes on the main page

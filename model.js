@@ -29,6 +29,7 @@ export const state = {
     lastPage: config.NAV_PAGES_LIMIT,
     pageToFetchToAPI: 1,
     itemPerPage: config.ITEMS_PER_PAGE,
+    currentShowSlice: [],
   },
 };
 
@@ -127,7 +128,10 @@ export async function selectPage(pageNumber) {
     await importAllShows(Math.floor(endIndex / config.API_PER_PAGE) + 1);
   }
 
-  return state.shows.slice(startIndex, endIndex);
+  return (state.pagination.currentShowSlice = state.shows.slice(
+    startIndex,
+    endIndex
+  ));
 }
 
 // Function checking if we jumped to next "pagination"

@@ -8,6 +8,10 @@ class NumberOfEpisodesView {
 
   //method is rendering the numbers in html
   render(searched, total) {
+    if (searched === undefined || total === undefined) {
+      this._clear();
+      return;
+    }
     this._searchedNumber = searched;
     this._totalNumber = total;
     const markup = this._generateMarkup();

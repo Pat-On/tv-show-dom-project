@@ -6,6 +6,7 @@ class SelectShowView {
 
   render(data) {
     this._data = data;
+    console.log(data);
     const markup = this._generateMarkup();
 
     this._clear();

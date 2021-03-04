@@ -6,6 +6,10 @@ class SelectEpisodeView {
   _parentElement = document.querySelector(".select__episode__input");
 
   render(data) {
+    if (data === undefined) {
+      this._clear();
+      return;
+    }
     this._data = data;
     const markup = [...this._generateMarkup()].join("");
     this._clear();
