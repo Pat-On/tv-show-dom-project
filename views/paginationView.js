@@ -20,7 +20,8 @@ class PaginationView {
     //TODO: needed modification of it
     this._parentElementTOP.addEventListener("click", async function (e) {
       e.preventDefault();
-      console.log(e.target.innerText);
+      // console.log(e.target.innerText);
+
       //I'm going to pass to handler the value of inner text, what is easier solution than creating to getQuery
       //!think over it
       handler(e.target.innerText);

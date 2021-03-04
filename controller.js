@@ -27,13 +27,26 @@ const controlPagePagination = async function (valueFromEvent) {
       startingNumberPagination,
       ITEMS_PER_PAGE
     );
+
     console.log(pageShows.length);
     paginationView.render(
       model.state.pagination.firstPage,
       model.state.pagination.lastPage
     );
-    selectShowView.render(pageShows);
-    showsView.render(pageShows);
+
+    //!TODO it need to be put into the MODEL - LOGIC ALWAYS TO MODEL
+    if (query === ">>" || query === "<<") {
+      const shows = await model.selectPage(
+        startingNumberPagination,
+        ITEMS_PER_PAGE
+      );
+      showsView.render(shows);
+    }
+    if (!isNaN(query)) {
+      const shows = await model.selectPage(query, ITEMS_PER_PAGE);
+      // selectShowView.render(shows);
+      showsView.render(shows);
+    }
   } catch (err) {
     console.error(err);
   }
