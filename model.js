@@ -156,9 +156,13 @@ export async function selectPage(pageNumber, itemsPerPage) {
 //jump function << 1 2 3 4 5 >>
 export function getNextOrPrevPage(linkText) {
   if (linkText === "<<" && state.pagination.firstPage !== 1) {
+    console.log(state.pagination.firstPage);
     state.pagination.lastPage = state.pagination.firstPage - 1;
     const firstPage = state.pagination.firstPage - NAV_PAGES_LIMIT;
+    console.log(firstPage);
     state.pagination.firstPage = firstPage < 1 ? 1 : firstPage;
+    console.log(firstPage);
+    console.log(state.pagination.firstPage);
     return state.pagination.firstPage;
   }
 

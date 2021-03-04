@@ -21,10 +21,10 @@ import paginationView from "./views/paginationView.js";
 const controlPagePagination = async function (valueFromEvent) {
   try {
     const query = valueFromEvent;
-    const startingNumberPagination = model.getNextOrPrevPage(query);
+    model.getNextOrPrevPage(query);
     console.log(query);
     const pageShows = await model.selectPage(
-      startingNumberPagination,
+      model.state.pagination.firstPage,
       ITEMS_PER_PAGE
     );
 
@@ -36,8 +36,9 @@ const controlPagePagination = async function (valueFromEvent) {
 
     //!TODO it need to be put into the MODEL - LOGIC ALWAYS TO MODEL
     if (query === ">>" || query === "<<") {
+      console.log(model.state.pagination.firstPage);
       const shows = await model.selectPage(
-        startingNumberPagination,
+        model.state.pagination.firstPage,
         ITEMS_PER_PAGE
       );
       showsView.render(shows);
