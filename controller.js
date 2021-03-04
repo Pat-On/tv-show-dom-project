@@ -1,12 +1,6 @@
 import "core-js/stable";
 import "regenerator-runtime/runtime";
 
-import {
-  NAV_PAGES_LIMIT,
-  ITEMS_PER_PAGE,
-  API_PER_PAGE,
-  THRESHOLD_PRE_FETCH,
-} from "./config.js";
 import * as model from "./model.js";
 import episodeViews from "./views/episodesView.js";
 import showsView from "./views/showsView.js";
@@ -24,8 +18,8 @@ const controlPagePagination = async function (valueFromEvent) {
     model.getNextOrPrevPage(query);
     console.log(query);
     const pageShows = await model.selectPage(
-      model.state.pagination.firstPage,
-      ITEMS_PER_PAGE
+      model.state.pagination.firstPage
+      // model.state.pagination.itemsPerPage
     );
 
     console.log(pageShows.length);
@@ -34,19 +28,24 @@ const controlPagePagination = async function (valueFromEvent) {
       model.state.pagination.lastPage
     );
 
-    //!TODO it need to be put into the MODEL - LOGIC ALWAYS TO MODEL
+    //!TODO it need to be put into the MODEL - LOGIC ALWAYS TO MODEL !BUG "<<" is going to try fetch til error and repeat and repeat
     if (query === ">>" || query === "<<") {
       console.log(model.state.pagination.firstPage);
       const shows = await model.selectPage(
-        model.state.pagination.firstPage,
-        ITEMS_PER_PAGE
+        model.state.pagination.firstPage
+        // model.state.pagination.itemPerPage
       );
       showsView.render(shows);
+      selectShowView.render(shows);
     }
     if (!isNaN(query)) {
-      const shows = await model.selectPage(query, ITEMS_PER_PAGE);
+      const shows = await model.selectPage(
+        query
+        // model.state.pagination.itemPerPage
+      );
       // selectShowView.render(shows);
       showsView.render(shows);
+      selectShowView.render(shows);
     }
   } catch (err) {
     console.error(err);
@@ -56,8 +55,11 @@ const controlPagePagination = async function (valueFromEvent) {
 //ASYNC FUNCTION
 const controlLoadingPageDefault = async function () {
   try {
-    //importing all episodes from API
-    const pageShows = await model.selectPage(1, ITEMS_PER_PAGE);
+    //importing all episodes from API !TODO Take it from model!! SEPARATION OF CONCERNS
+    const pageShows = await model.selectPage(
+      1
+      // model.state.pagination.itemPerPage
+    );
     console.log(pageShows.length);
     paginationView.render(1, model.state.pagination.lastPage);
     selectShowView.render(pageShows);
