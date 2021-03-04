@@ -80,7 +80,6 @@ const controlSelectedShow = async function () {
       );
       selectShowView.render(model.state.pagination.currentShowSlice);
       showsView.render(model.state.pagination.currentShowSlice);
-      selectEpisodeView.render(model.state.episodes);
 
       return;
     }
@@ -88,6 +87,7 @@ const controlSelectedShow = async function () {
     numberOfEpisodesView.render(model.state.episodes, model.state.episodes);
     model.findSelectedShow(query);
     episodeViews.render(model.state.episodes);
+    //TODO: After seasonView is ready do proper print of episodes
     selectEpisodeView.render(model.state.episodes);
   } catch (err) {
     console.error(err);

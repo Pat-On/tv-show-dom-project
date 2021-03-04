@@ -7,8 +7,7 @@ class SelectEpisodeView {
 
   render(data) {
     if (data === undefined) {
-      this._clear();
-      return;
+      data = [];
     }
     this._data = data;
     const markup = [...this._generateMarkup()].join("");
