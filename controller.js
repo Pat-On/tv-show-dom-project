@@ -64,7 +64,7 @@ const controlLoadingPageDefault = async function () {
 };
 
 //ASYNC FUNCTION
-const controlSelectedResults = async function () {
+const controlSelectedShow = async function () {
   try {
     const query = selectShowView.getQuery();
     await model.importEpisodesOfChosenShow(query);
@@ -86,7 +86,7 @@ const controlSelectedResults = async function () {
 
 //function which is going to control chosen show and render it on web plus change the possible episodes to choose
 // !TODO I have refactor this to add events to the option in select menu and add event to it
-const controlSelectedShowResults = function () {
+const controlSelectedEpisode = function () {
   //returning value of parent element from the selectShowView
   const query = +selectEpisodeView.getQuery();
 
@@ -123,9 +123,10 @@ const init = function () {
   // there is need to reconsider the way how to join each part of the code
   //because the page is loading two times from search results and window load event
   controlLoadingPageDefault();
-  searchView.addHandlerSearch(controlSearchResult);
-  selectShowView.addHandlerEpisode(controlSelectedResults);
-  selectEpisodeView.addHandlerEpisode(controlSelectedShowResults);
+  searchView.addHandlerSearch(controlSearchResult); //!BUG - not to fix because functionality has to be changes
+
+  selectShowView.addHandlerShows(controlSelectedShow);
+  selectEpisodeView.addHandlerEpisode(controlSelectedEpisode);
 
   //development
   paginationView.addHandlerPagination(controlPagePagination);

@@ -12,7 +12,7 @@ class SelectShowView {
     this._parentElement.insertAdjacentHTML("afterbegin", markup.join(""));
   }
 
-  addHandlerEpisode(handler) {
+  addHandlerShows(handler) {
     this._parentElement.addEventListener("change", function (e) {
       e.preventDefault();
       handler();
