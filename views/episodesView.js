@@ -8,11 +8,9 @@ class EpisodesView {
   render(data) {
     // temporary solution -> if data is not array put it inside the array!
     this._data = Array.isArray(data) ? data : [data];
-    // this._data = data;
 
     // rendering the episodes on the main page
 
-    // console.log(data);
     const markup = this._generateMarkup().join("");
 
     this._clear();
@@ -37,19 +35,10 @@ class EpisodesView {
                       <h2>${item.name} - S${item.season
         .toString()
         .padStart(2, 0)}E${item.number.toString().padStart(2, 0)}</h2>
-                      <img src="${item.image.medium}" alt="">
-                      ${item.summary}
-                      <a href=${item.url}>Check the source</a>
+                      <img src="${item.image?.medium}" alt="">
+                      <p>${item.summary}<p>
                   </div>
                   `);
-      // markup.push(`
-      //                   <div class="episode">
-      //                       <h2>${item.name}</h2>
-      //                       <img src="${item.image.medium}" alt="">
-      //                       ${item.summary}
-      //                       <a href=${item.url}>Check the source</a>
-      //                   </div>
-      //                   `);
     });
     return markup;
   }

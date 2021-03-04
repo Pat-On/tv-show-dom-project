@@ -31,6 +31,7 @@ class ShowsView {
   _generateMarkup() {
     const markup = [];
     const episodes = this._data;
+    console.log(episodes);
     episodes.forEach((item) => {
       // markup.push(`
       //             <div class="episode">
@@ -41,13 +42,16 @@ class ShowsView {
       //             </div>
       //             `)
       markup.push(`
-                        <div class="episode">
-                            <h2>${item.name}</h2>
-                            <img src="${item.image.medium}" alt="">
-                            ${item.summary}
-                            <a href=${item.url}>Check the source</a>
-                        </div>
-                        `);
+          <h2>${item.name}</h2>
+          <img src="${item.image?.medium}" alt="">
+          ${item.summary}
+          <p>Rated: ${item.rating?.average}</p>
+          <p>Genres: ${item.genres.join(" | ")}</p>
+          <p>Runtime: ${item.runtime} minutes</p>
+          <a href=${item.url}>Check the source</a>
+          </div>
+          <div class="episode">
+                 `);
     });
     return markup;
   }

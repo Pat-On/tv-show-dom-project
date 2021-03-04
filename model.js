@@ -1,10 +1,8 @@
-import { getOneShow, getAllShows } from "./fakeApi/shows.js";
 import { async } from "regenerator-runtime";
-
-//importing fake episodes
-import { getOneEpisode, getAllEpisodes } from "./fakeApi/episodes.js";
-import "core-js/stable";
 import "regenerator-runtime/runtime";
+import "core-js/stable";
+
+import * as config from "./config.js";
 
 //State variable which is controlling the state of the program
 export const state = {
@@ -26,21 +24,22 @@ export const state = {
       selected: {},
     },
   },
+  pagination: {
+    firstPage: 1,
+    lastPage: config.NAV_PAGES_LIMIT,
+    pageToFetchToAPI: 1,
+    itemPerPage: config.ITEMS_PER_PAGE,
+  },
 };
 
-//import from the real API Temporary it is only set up to page=0
-// !TODO later on I need to implement the logic which is going to fetch more pages dependent from the user request
-// and divide the data 240 episodes for 60 or 30 on page?
-export const importAllEpisodes = async function () {
+export const importAllShows = async function (apiPageNumber) {
   try {
-    // const res = await fetch("https://api.tvmaze.com/shows/82/episodes")
-    const res = await fetch("https://api.tvmaze.com/shows?page=0");
+    const res = await fetch(
+      `https://api.tvmaze.com/shows?page=${apiPageNumber}`
+    );
     const data = await res.json();
-    //console log checking how many time episodes were wetched
     console.log("Fetching model - importAllEpisodes");
-    // console.log(data); //it is working
-    state.shows = data.map((item) => item);
-    // console.log(state.episodes);
+    state.shows.push(...data);
 
     if (!res.ok) throw new Error(`I'm coming from importAllShows${res.status}`);
     return data;
@@ -53,15 +52,14 @@ export const importAllEpisodes = async function () {
 export const importEpisodesOfChosenShow = async function (id) {
   try {
     state.selection.query = id;
-    console.log(id);
     //guard function to the 0 from the id value - id value 0 no exist!
     //this value is used to render shows on the page
     if (id === 0) return;
     const res = await fetch(`https://api.tvmaze.com/shows/${id}/episodes`);
     const data = await res.json();
-    console.log(state);
+    console.log(data);
     state.episodes = data.map((item) => item);
-    console.log(state.episodes);
+
     if (!res.ok)
       throw new Error(
         `I'm coming from importEpisodesOfChosenShow${res.status}`
@@ -72,23 +70,7 @@ export const importEpisodesOfChosenShow = async function (id) {
   }
 };
 
-//importing Shows and Episodes base on "fake API"
-// const importAllShows = function () {
-//     state.shows = getAllShows();
-// };
-
-// const ImportOneShow = function () {
-//     state.show = getOneShow();
-// };
-
-// const importAllEpisodes = function () {
-//     state.episodes = getAllEpisodes();
-// };
-
-// const ImportOneEpisode = function () {
-//     state.episode = getOneEpisode();
-// };
-
+//TODO in next step searchResults() methods is going to be replace by API search option
 // search results for the searchView - ".search".
 //function is looking for the looking word inside the description of episode (summary) and the (name)
 export const searchResults = function (query) {
@@ -102,10 +84,9 @@ export const searchResults = function (query) {
     )
       return episode;
   });
-  // console.log(state.search.results);
 };
 
-//!TODO refactor this to function in one
+//!TODO refactor these to function in one
 
 //function which is going to be used in select menu. Object is selected by ID of the object
 export const findSelectedShow = function (query) {
@@ -123,11 +104,46 @@ export const findSelectedEpisode = function (query) {
   state.selection.episodes.selected = data.find((item) => item.id === query);
 };
 
-// const init = function () {
-//     importAllShows();
-//     ImportOneShow();
-//     importAllEpisodes();
-//     ImportOneEpisode();
-// }
+//!IMPORTANT - Based on Adam's code
 
-// init();
+// calculating and selecting the page plus number of shows on it + fetch
+export async function selectPage(pageNumber) {
+  state.pagination.pageToFetchToAPI = pageNumber;
+  //calculating the index of the object rendered on the page -
+  const startIndex = (pageNumber - 1) * state.pagination.itemPerPage; // 0 * 40 = index 0
+  const endIndex = pageNumber * state.pagination.itemPerPage; //1 * 40 = 40 index
+
+  //checking which shows is going to be fetched base on endIndex and API_PER_PAGE
+  if (endIndex > state.shows.length) {
+    console.log("fetch");
+    //!TODO FIX FETCH
+    await importAllShows(Math.floor(endIndex / config.API_PER_PAGE));
+  }
+
+  //lengths of the all fetched shows compare to the end index from the page plus 1 to get this one extra
+  if (endIndex + config.THRESHOLD_PRE_FETCH > state.shows.length) {
+    console.log("pre-fetching");
+    // plus one because we need new page not what we have on page
+    await importAllShows(Math.floor(endIndex / config.API_PER_PAGE) + 1);
+  }
+
+  return state.shows.slice(startIndex, endIndex);
+}
+
+// Function checking if we jumped to next "pagination"
+export function getNextOrPrevPage(linkText) {
+  if (linkText === "<<" && state.pagination.firstPage !== 1) {
+    console.log(state.pagination.firstPage);
+    state.pagination.lastPage = state.pagination.firstPage - 1;
+    const firstPage = state.pagination.firstPage - config.NAV_PAGES_LIMIT;
+    state.pagination.firstPage = firstPage < 1 ? 1 : firstPage;
+    return state.pagination.firstPage;
+  }
+
+  if (linkText === ">>") {
+    state.pagination.firstPage = state.pagination.lastPage + 1;
+    state.pagination.lastPage =
+      state.pagination.firstPage + config.NAV_PAGES_LIMIT - 1;
+    return state.pagination.firstPage;
+  }
+}

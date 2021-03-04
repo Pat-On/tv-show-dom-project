@@ -1,9 +1,9 @@
 //!TODO There is need to change the name of this class because this one is related to the select menu for select__input dedicated
 // for the episodes of the chosen tv show
 
-class SelectInputView {
+class SelectEpisodeView {
   _data;
-  _parentElement = document.querySelector(".select__input");
+  _parentElement = document.querySelector(".select__episode__input");
 
   render(data) {
     this._data = data;
@@ -21,7 +21,6 @@ class SelectInputView {
 
   getQuery() {
     const query = +this._parentElement.value;
-    // this._clearInput();
     return query;
   }
 
@@ -34,7 +33,6 @@ class SelectInputView {
     ];
     const episodes = this._data;
     episodes.forEach((item) => {
-      // markup.push(`<option value="${item.id}">${item.season.toString().padStart(2, 0)}E${item.number.toString().padStart(2, 0)} - ${item.name}</option>`)
       markup.push(
         `<option value="${item.id}"> S${item.season
           .toString()
@@ -51,4 +49,4 @@ class SelectInputView {
   }
 }
 
-export default new SelectInputView();
+export default new SelectEpisodeView();
