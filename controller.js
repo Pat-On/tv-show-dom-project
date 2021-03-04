@@ -17,10 +17,7 @@ const controlPagePagination = async function (valueFromEvent) {
     const query = valueFromEvent;
     model.getNextOrPrevPage(query);
     console.log(query);
-    const pageShows = await model.selectPage(
-      model.state.pagination.firstPage
-      // model.state.pagination.itemsPerPage
-    );
+    const pageShows = await model.selectPage(model.state.pagination.firstPage);
 
     console.log(pageShows.length);
     paginationView.render(
@@ -28,22 +25,16 @@ const controlPagePagination = async function (valueFromEvent) {
       model.state.pagination.lastPage
     );
 
-    //!TODO it need to be put into the MODEL - LOGIC ALWAYS TO MODEL !BUG "<<" is going to try fetch til error and repeat and repeat
+    //!TODO it need to be put into the MODEL - LOGIC ALWAYS TO MODEL
+    //!BUG "<<" is going to try fetch til error and repeat and repeat
     if (query === ">>" || query === "<<") {
       console.log(model.state.pagination.firstPage);
-      const shows = await model.selectPage(
-        model.state.pagination.firstPage
-        // model.state.pagination.itemPerPage
-      );
+      const shows = await model.selectPage(model.state.pagination.firstPage);
       showsView.render(shows);
       selectShowView.render(shows);
     }
     if (!isNaN(query)) {
-      const shows = await model.selectPage(
-        query
-        // model.state.pagination.itemPerPage
-      );
-      // selectShowView.render(shows);
+      const shows = await model.selectPage(query);
       showsView.render(shows);
       selectShowView.render(shows);
     }
@@ -55,13 +46,15 @@ const controlPagePagination = async function (valueFromEvent) {
 //ASYNC FUNCTION
 const controlLoadingPageDefault = async function () {
   try {
-    //importing all episodes from API !TODO Take it from model!! SEPARATION OF CONCERNS
+    //importing all episodes from API
     const pageShows = await model.selectPage(
-      1
-      // model.state.pagination.itemPerPage
+      model.state.pagination.pageToFetchToAPI
     );
     console.log(pageShows.length);
-    paginationView.render(1, model.state.pagination.lastPage);
+    paginationView.render(
+      model.state.pagination.firstPage,
+      model.state.pagination.lastPage
+    );
     selectShowView.render(pageShows);
     showsView.render(pageShows);
     selectEpisodeView.render(model.state.episodes);

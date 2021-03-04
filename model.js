@@ -8,7 +8,6 @@ import * as config from "./config.js";
 export const state = {
   episodes: [],
   episode: {},
-  //!NOTE: I can use these shows as a accumulator for the pagination
   shows: [],
   show: {},
   search: {
@@ -105,24 +104,23 @@ export const findSelectedEpisode = function (query) {
   state.selection.episodes.selected = data.find((item) => item.id === query);
 };
 
-//!IMPORTANT - Adam's work! Beautiful!
+//!IMPORTANT - Based on Adam's code
 
-// calculating and selecting the page plus number episodes on it plus fetch
+// calculating and selecting the page plus number of shows on it + fetch
 export async function selectPage(pageNumber) {
-  //api page to state variable (obj)
   state.pagination.pageToFetchToAPI = pageNumber;
   //calculating the index of the object rendered on the page -
   const startIndex = (pageNumber - 1) * state.pagination.itemPerPage; // 0 * 40 = index 0
   const endIndex = pageNumber * state.pagination.itemPerPage; //1 * 40 = 40 index
 
-  //checking which episode is going to be fetched base on endIndex and API_PER_PAGE
+  //checking which shows is going to be fetched base on endIndex and API_PER_PAGE
   if (endIndex > state.shows.length) {
     console.log("fetch");
     //!TODO FIX FETCH
     await importAllShows(Math.floor(endIndex / config.API_PER_PAGE));
   }
 
-  //lengths of the all fetched shows compare to the end index from the page plus
+  //lengths of the all fetched shows compare to the end index from the page plus 1 to get this one extra
   if (endIndex + config.THRESHOLD_PRE_FETCH > state.shows.length) {
     console.log("pre-fetching");
     // plus one because we need new page not what we have on page
@@ -132,16 +130,13 @@ export async function selectPage(pageNumber) {
   return state.shows.slice(startIndex, endIndex);
 }
 
-//function which is calculating the number of the page from the number of episodes on page
+// Function checking if we jumped to next "pagination"
 export function getNextOrPrevPage(linkText) {
   if (linkText === "<<" && state.pagination.firstPage !== 1) {
     console.log(state.pagination.firstPage);
     state.pagination.lastPage = state.pagination.firstPage - 1;
     const firstPage = state.pagination.firstPage - config.NAV_PAGES_LIMIT;
-    console.log(firstPage);
     state.pagination.firstPage = firstPage < 1 ? 1 : firstPage;
-    console.log(firstPage);
-    console.log(state.pagination.firstPage);
     return state.pagination.firstPage;
   }
 

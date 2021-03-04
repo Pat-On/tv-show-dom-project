@@ -17,13 +17,8 @@ class PaginationView {
   }
 
   addHandlerPagination(handler) {
-    //TODO: needed modification of it
     this._parentElementTOP.addEventListener("click", async function (e) {
       e.preventDefault();
-      // console.log(e.target.innerText);
-
-      //I'm going to pass to handler the value of inner text, what is easier solution than creating to getQuery
-      //!think over it
       handler(e.target.innerText);
     });
     //aaa right even propagation! Smarty me XD
@@ -33,13 +28,12 @@ class PaginationView {
     });
   }
 
-  //!TODO: think over this, how I want to handle that I implemented double pagination is that have sense? or is better to put one on the bottom?
-  getQuery() {
-    const query = +this._parentElement.value;
-    return query;
-  }
+  // //!TODO: think over this, how I want to handle that I implemented double pagination is that have sense? or is better to put one on the bottom?
+  // getQuery() {
+  //   const query = +this._parentElement.value;
+  //   return query;
+  // }
 
-  //!TODO: Markup for pagination
   _generateMarkup() {
     const markup = [
       `
