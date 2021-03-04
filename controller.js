@@ -1,7 +1,13 @@
-import * as model from "./model.js";
 import "core-js/stable";
 import "regenerator-runtime/runtime";
 
+import {
+  NAV_PAGES_LIMIT,
+  ITEMS_PER_PAGE,
+  API_PER_PAGE,
+  THRESHOLD_PRE_FETCH,
+} from "./config.js";
+import * as model from "./model.js";
 import episodeViews from "./views/episodesView.js";
 import showsView from "./views/showsView.js";
 import numberOfEpisodesView from "./views/numberOfEpisodesView.js";
@@ -12,14 +18,36 @@ import episodesView from "./views/episodesView.js";
 
 import paginationView from "./views/paginationView.js";
 
+const controlPagePagination = async function (valueFromEvent) {
+  try {
+    const query = valueFromEvent;
+    const startingNumberPagination = model.getNextOrPrevPage(query);
+    console.log(query);
+    const pageShows = await model.selectPage(
+      startingNumberPagination,
+      ITEMS_PER_PAGE
+    );
+    console.log(pageShows.length);
+    paginationView.render(
+      model.state.pagination.firstPage,
+      model.state.pagination.lastPage
+    );
+    selectShowView.render(pageShows);
+    showsView.render(pageShows);
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 //ASYNC FUNCTION
 const controlLoadingPageDefault = async function () {
   try {
     //importing all episodes from API
-    await model.importAllEpisodes(1);
-
-    selectShowView.render(model.state.shows);
-    showsView.render(model.state.shows);
+    const pageShows = await model.selectPage(1, ITEMS_PER_PAGE);
+    console.log(pageShows.length);
+    paginationView.render(1, model.state.pagination.lastPage);
+    selectShowView.render(pageShows);
+    showsView.render(pageShows);
     selectEpisodeView.render(model.state.episodes);
   } catch (err) {
     console.error(err);
@@ -90,8 +118,8 @@ const init = function () {
   selectShowView.addHandlerEpisode(controlSelectedResults);
   selectEpisodeView.addHandlerEpisode(controlSelectedShowResults);
 
-  //!TODO: <<<<<<<<<<<<<TESTING>>>>>>>>>>>>>>>>>
-  paginationView.render([1, 2, 3, 4, 5]);
+  //development
+  paginationView.addHandlerPagination(controlPagePagination);
 };
 
 init();

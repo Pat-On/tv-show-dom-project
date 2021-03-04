@@ -2,6 +2,13 @@ import { async } from "regenerator-runtime";
 import "regenerator-runtime/runtime";
 import "core-js/stable";
 
+import {
+  NAV_PAGES_LIMIT,
+  ITEMS_PER_PAGE,
+  API_PER_PAGE,
+  THRESHOLD_PRE_FETCH,
+} from "./config.js";
+
 //State variable which is controlling the state of the program
 export const state = {
   episodes: [],
@@ -23,6 +30,11 @@ export const state = {
       selected: {},
     },
   },
+  pagination: {
+    firstPage: 1,
+    lastPage: NAV_PAGES_LIMIT,
+    pageToFetchToAPI: 1,
+  },
 };
 
 //import from the real API Temporary it is only set up to page=0
@@ -30,7 +42,7 @@ export const state = {
 // and divide the data 240 episodes for 60 or 30 on page?
 export const importAllEpisodes = async function (apiPageNumber) {
   try {
-//teorteticly it should work
+    //teorteticly it should work
     const res = await fetch(
       `https://api.tvmaze.com/shows?page=${apiPageNumber}`
     );
@@ -106,13 +118,15 @@ export const findSelectedEpisode = function (query) {
 
 //function responsible for controlling the pagination
 //!IMPORTANT - Adam's work! Beautiful!
+//!TODO what is going to left, has to go to config
 
-const API_PER_PAGE = 100;
+// let _firstPage = 1;
+// let _lastPage = NAV_PAGES_LIMIT;
 
-// if we're this close to the end of the list, get the next page
-const THRESHOLD_PRE_FETCH = 200;
-
+// calculating and selecting the page plus number episodes on it plus fetch
 export async function selectPage(pageNumber, itemsPerPage) {
+  //api page to state variable (obj)
+  state.pagination.pageToFetchToAPI = pageNumber;
   //calculating the index of the object rendered on the page -
   const startIndex = (pageNumber - 1) * itemsPerPage; // 0 * 40 = index 0
   const endIndex = pageNumber * itemsPerPage; //1 * 40 = 40 index
@@ -124,7 +138,7 @@ export async function selectPage(pageNumber, itemsPerPage) {
     await importAllEpisodes(Math.floor(endIndex / API_PER_PAGE));
   }
 
-  //lenghts of the all fetched shows compare to the end index from the page plus
+  //lengths of the all fetched shows compare to the end index from the page plus
   if (endIndex + THRESHOLD_PRE_FETCH > state.shows.length) {
     console.log("pre-fetching");
     // plus one because we need new page not what we have on page
@@ -132,34 +146,28 @@ export async function selectPage(pageNumber, itemsPerPage) {
     await importAllEpisodes(Math.floor(endIndex / API_PER_PAGE) + 1);
   }
 
-  return _allShows.slice(startIndex, endIndex);
+  return state.shows.slice(startIndex, endIndex);
 }
 
 //function which is calculating the number of the page from the number of episodes on page
 
-//helper function with their variables!IMPORTANT 
-const NAV_PAGES_LIMIT = 5;
-const ITEMS_PER_PAGE = 40;
-
-let _firstPage = 1;
-let _lastPage = NAV_PAGES_LIMIT;
+//helper function with their variables!IMPORTANT
 
 //jump function << 1 2 3 4 5 >>
-function getNextOrPrevPage(linkText) {
-  if (linkText === "<<" && _firstPage !== 1) {
-    _lastPage = _firstPage - 1;
-    const firstPage = _firstPage - NAV_PAGES_LIMIT;
-    _firstPage = firstPage < 1 ? 1 : firstPage;
-    return _firstPage;
+export function getNextOrPrevPage(linkText) {
+  if (linkText === "<<" && state.pagination.firstPage !== 1) {
+    state.pagination.lastPage = state.pagination.firstPage - 1;
+    const firstPage = state.pagination.firstPage - NAV_PAGES_LIMIT;
+    state.pagination.firstPage = firstPage < 1 ? 1 : firstPage;
+    return state.pagination.firstPage;
   }
 
   if (linkText === ">>") {
-    _firstPage = _lastPage + 1;
-    _lastPage = _firstPage + NAV_PAGES_LIMIT - 1;
-    return _firstPage;
+    state.pagination.firstPage = state.pagination.lastPage + 1;
+    state.pagination.lastPage =
+      state.pagination.firstPage + NAV_PAGES_LIMIT - 1;
+    return state.pagination.firstPage;
   }
 }
 
-export function createPaginationListItem(pageNum) {
-  
-}
+// export function createPaginationListItem(pageNum) {}

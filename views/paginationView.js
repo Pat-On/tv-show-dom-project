@@ -2,12 +2,14 @@
 // for the episodes of the chosen tv show
 
 class PaginationView {
-  _data;
+  _dataStartPaginationNumber;
+  _dataEndPaginationNumber;
   _parentElementTOP = document.querySelector(".nav_ul--top");
   _parentElementBOTTOM = document.querySelector(".nav_ul--bottom");
 
-  render(data) {
-    this._data = data;
+  render(start, end) {
+    this._dataStartPaginationNumber = start;
+    this._dataEndPaginationNumber = end;
     const markup = [...this._generateMarkup()].join("");
     this._clear();
     this._parentElementTOP.insertAdjacentHTML("afterbegin", markup);
@@ -15,13 +17,16 @@ class PaginationView {
   }
 
   addHandlerPagination(handler) {
-    this._parentElementTOP.addEventListener("click", function (e) {
+    //TODO: needed modification of it
+    this._parentElementTOP.addEventListener("click", async function (e) {
       e.preventDefault();
+      console.log(e.target.innerText);
       //I'm going to pass to handler the value of inner text, what is easier solution than creating to getQuery
       //!think over it
       handler(e.target.innerText);
     });
-    this._parentElementBOTTOM.addEventListener("click", function (e) {
+    //aaa right even propagation! Smarty me XD
+    this._parentElementBOTTOM.addEventListener("click", async function (e) {
       e.preventDefault();
       handler(e.target.innerText);
     });
@@ -42,17 +47,20 @@ class PaginationView {
         </li>
         `,
     ];
-    const pagination = this._data;
 
-    pagination.forEach((item) => {
+    for (
+      let index = this._dataStartPaginationNumber;
+      index <= this._dataEndPaginationNumber;
+      index++
+    ) {
       markup.push(
         `
         <li>
-            <a class="page-link" href="#">${item}</a>
+            <a class="page-link" href="#">${index}</a>
         </li>
         `
       );
-    });
+    }
 
     markup.push(
       `
