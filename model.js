@@ -102,7 +102,7 @@ export const searchResults = async function (query) {
   try {
     state.search.query = query;
     const fetchVariable = fetch(
-      `http://api.tvmaze.com/search/shows?q=${query}`
+      `https://api.tvmaze.com/search/shows?q=${query}`
     );
 
     const res = await Promise.race([
