@@ -138,11 +138,12 @@ const controlSearchResult = async function () {
 
     if (!query) return;
     await model.searchResults(query);
-    // console.log(data + "???????????????????");
+
     //2 search and rendering search results
     console.log(model.state.search.results);
     showsView.render(model.state.search.results);
-
+    paginationView.render();
+    selectShowView.render(model.state.search.results);
     model.state.search.results = [];
   } catch (err) {
     console.error(err);
@@ -154,7 +155,7 @@ const init = function () {
   // there is need to reconsider the way how to join each part of the code
   //because the page is loading two times from search results and window load event
   controlLoadingPageDefault();
-  searchView.addHandlerSearch(helpers.debounce(controlSearchResult, 2000)); //!BUG - not to fix because functionality has to be changes
+  searchView.addHandlerSearch(helpers.debounce(controlSearchResult, 1000)); //!BUG - not to fix because functionality has to be changes
 
   selectShowView.addHandlerShows(controlSelectedShow);
   selectEpisodeView.addHandlerEpisode(controlSelectedEpisode);
