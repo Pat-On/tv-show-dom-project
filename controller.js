@@ -12,6 +12,20 @@ import episodesView from "./views/episodesView.js";
 
 import paginationView from "./views/paginationView.js";
 
+import * as helpers from "./helpers.js";
+
+// const try2 = document.querySelector("h1");
+// console.log(try2);
+// try2.addEventListener(
+//   "click",
+//   helpers.debounce(async function () {
+//     const data = await model.importAllShows(10);
+//     console.log(data);
+//   }, 2000)
+// );
+
+// try2.addEventListener("click", () => console.log("??"));
+
 const controlPagePagination = async function (valueFromEvent) {
   try {
     const query = valueFromEvent;
@@ -135,7 +149,7 @@ const init = function () {
   // there is need to reconsider the way how to join each part of the code
   //because the page is loading two times from search results and window load event
   controlLoadingPageDefault();
-  searchView.addHandlerSearch(controlSearchResult); //!BUG - not to fix because functionality has to be changes
+  searchView.addHandlerSearch(helpers.debounce(controlSearchResult, 2000)); //!BUG - not to fix because functionality has to be changes
 
   selectShowView.addHandlerShows(controlSelectedShow);
   selectEpisodeView.addHandlerEpisode(controlSelectedEpisode);

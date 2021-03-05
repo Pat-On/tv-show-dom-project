@@ -85,17 +85,40 @@ export const importEpisodesOfChosenShow = async function (id) {
 //TODO in next step searchResults() methods is going to be replace by API search option
 // search results for the searchView - ".search".
 //function is looking for the looking word inside the description of episode (summary) and the (name)
-export const searchResults = function (query) {
-  state.search.query = query;
-  const data = state.shows;
+// export const searchResults = function (query) {
+//   state.search.query = query;
+//   const data = state.shows;
 
-  state.search.results = data.filter((episode) => {
-    if (
-      episode.summary.toLowerCase().includes(query.toLowerCase()) ||
-      episode.name.toLowerCase().includes(query.toLowerCase())
-    )
-      return episode;
-  });
+//   state.search.results = data.filter((episode) => {
+//     if (
+//       episode.summary.toLowerCase().includes(query.toLowerCase()) ||
+//       episode.name.toLowerCase().includes(query.toLowerCase())
+//     )
+//       return episode;
+//   });
+// };
+
+export const searchResults = async function (query) {
+  try {
+    state.search.query = query;
+    //guard function to the 0 from the id value - id value 0 no exist!
+    //this value is used to render shows on the page
+    // if (id === 0) return;
+    const fetchVariable = fetch(
+      `http://api.tvmaze.com/search/shows?q=${query}`
+    );
+
+    const res = await Promise.race([
+      fetchVariable,
+      helpers.timeout(config.TIME_OUT),
+    ]);
+    const data = await res.json();
+    console.log(data);
+    state.episodes = data.map((item) => item);
+
+    if (!res.ok) throw new Error(`I'm coming from searchResults${res.status}`);
+    return data;
+  } catch (err) {}
 };
 
 //!TODO refactor these to function in one
