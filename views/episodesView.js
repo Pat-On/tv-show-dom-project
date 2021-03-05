@@ -39,8 +39,12 @@ class EpisodesView {
                       <h2>${item.name} - S${item.season
         .toString()
         .padStart(2, 0)}E${item.number.toString().padStart(2, 0)}</h2>
-                      <img src="${item.image?.medium}" alt="">
-                      <p>${item.summary}<p>
+                      <img src="${
+                        item.image?.medium
+                          ? item.image.medium
+                          : "https://static.tvmaze.com/images/no-img/no-img-landscape-text.png"
+                      }" alt="">
+                      <p>${item?.summary ? item?.summary : "Missing data"}<p>
                   </div>
                   `);
     });

@@ -58,6 +58,7 @@ const controlLoadingPageDefault = async function () {
     selectShowView.render(pageShows);
     showsView.render(pageShows);
     selectEpisodeView.render(model.state.episodes);
+    selectEpisodeView.hideElement();
   } catch (err) {
     console.error(err);
   }
@@ -73,7 +74,7 @@ const controlSelectedShow = async function () {
     if (query === 0) {
       selectEpisodeView.render();
       numberOfEpisodesView.render();
-
+      selectEpisodeView.hideElement();
       paginationView.render(
         model.state.pagination.firstPage,
         model.state.pagination.lastPage
@@ -87,6 +88,7 @@ const controlSelectedShow = async function () {
     numberOfEpisodesView.render(model.state.episodes, model.state.episodes);
     model.findSelectedShow(query);
     episodeViews.render(model.state.episodes);
+    selectEpisodeView.showElement();
     //TODO: After seasonView is ready do proper print of episodes
     selectEpisodeView.render(model.state.episodes);
   } catch (err) {
