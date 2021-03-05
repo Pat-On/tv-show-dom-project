@@ -143,3 +143,4 @@ const init = function () {
 };
 
 init();
+// I really like how you have identified and commented where you think the bugs are... which in turn will help you to resolve them later down the line.
