@@ -101,9 +101,6 @@ export const importEpisodesOfChosenShow = async function (id) {
 export const searchResults = async function (query) {
   try {
     state.search.query = query;
-    //guard function to the 0 from the id value - id value 0 no exist!
-    //this value is used to render shows on the page
-    // if (id === 0) return;
     const fetchVariable = fetch(
       `http://api.tvmaze.com/search/shows?q=${query}`
     );
@@ -113,8 +110,8 @@ export const searchResults = async function (query) {
       helpers.timeout(config.TIME_OUT),
     ]);
     const data = await res.json();
-    console.log(data);
-    state.episodes = data.map((item) => item);
+
+    state.search.results = data.map((item) => item.show);
 
     if (!res.ok) throw new Error(`I'm coming from searchResults${res.status}`);
     return data;

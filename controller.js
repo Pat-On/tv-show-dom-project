@@ -125,23 +125,28 @@ const controlSelectedEpisode = function () {
   episodeViews.render(model.state.selection.episodes.selected);
 };
 
-const controlSearchResult = function () {
-  // 1 search query
-  const query = searchView.getQuery();
+const controlSearchResult = async function () {
+  try {
+    // 1 search query
+    const query = searchView.getQuery();
 
-  if (query === "") {
-    showsView.render(model.state.shows);
+    if (query === "") {
+      showsView.render(model.state.shows);
+      model.state.search.results = [];
+      return;
+    }
+
+    if (!query) return;
+    await model.searchResults(query);
+    // console.log(data + "???????????????????");
+    //2 search and rendering search results
+    console.log(model.state.search.results);
+    showsView.render(model.state.search.results);
+
     model.state.search.results = [];
-    return;
+  } catch (err) {
+    console.error(err);
   }
-
-  if (!query) return;
-  model.searchResults(query);
-
-  //2 search and rendering search results
-  showsView.render(model.state.search.results);
-
-  model.state.search.results = [];
 };
 
 //init function which is going to lunch all needed function following the MVC and Observer patter

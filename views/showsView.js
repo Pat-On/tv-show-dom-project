@@ -9,12 +9,12 @@ class ShowsView {
     // temporary solution -> if data is not array put it inside the array!
     this._data = Array.isArray(data) ? data : [data];
     // this._data = data;
-
+    console.log("?");
     // rendering the episodes on the main page
 
     // console.log(data);
     const markup = this._generateMarkup().join("");
-
+    // console.log(markup);
     this._clear();
     this._parentElement.insertAdjacentHTML("afterbegin", markup);
   }
@@ -30,9 +30,9 @@ class ShowsView {
   // function which is generating the necessary markup needed to be add to html
   _generateMarkup() {
     const markup = [];
-    const episodes = this._data;
-    console.log(episodes);
-    episodes.forEach((item) => {
+    const shows = this._data;
+    console.log(shows);
+    shows.forEach((item) => {
       // markup.push(`
       //             <div class="episode">
       //                 <h2>${item.name} - S${item.season.toString().padStart(2, 0)}E${item.number.toString().padStart(2, 0)}</h2>
@@ -46,7 +46,7 @@ class ShowsView {
           <img src="${item.image?.medium}" alt="">
           ${item.summary}
           <p>Rated: ${item.rating?.average}</p>
-          <p>Genres: ${item.genres.join(" | ")}</p>
+          <p>Genres: ${item?.genres?.join(" | ")}</p>
           <p>Runtime: ${item.runtime} minutes</p>
           <a href=${item.url}>Check the source</a>
           </div>
