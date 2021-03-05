@@ -12,6 +12,20 @@ import episodesView from "./views/episodesView.js";
 
 import paginationView from "./views/paginationView.js";
 
+import * as helpers from "./helpers.js";
+
+// const try2 = document.querySelector("h1");
+// console.log(try2);
+// try2.addEventListener(
+//   "click",
+//   helpers.debounce(async function () {
+//     const data = await model.importAllShows(10);
+//     console.log(data);
+//   }, 2000)
+// );
+
+// try2.addEventListener("click", () => console.log("??"));
+
 const controlPagePagination = async function (valueFromEvent) {
   try {
     const query = valueFromEvent;
@@ -58,6 +72,7 @@ const controlLoadingPageDefault = async function () {
     selectShowView.render(pageShows);
     showsView.render(pageShows);
     selectEpisodeView.render(model.state.episodes);
+    selectEpisodeView.hideElement();
   } catch (err) {
     console.error(err);
   }
@@ -73,7 +88,7 @@ const controlSelectedShow = async function () {
     if (query === 0) {
       selectEpisodeView.render();
       numberOfEpisodesView.render();
-
+      selectEpisodeView.hideElement();
       paginationView.render(
         model.state.pagination.firstPage,
         model.state.pagination.lastPage
@@ -87,6 +102,7 @@ const controlSelectedShow = async function () {
     numberOfEpisodesView.render(model.state.episodes, model.state.episodes);
     model.findSelectedShow(query);
     episodeViews.render(model.state.episodes);
+    selectEpisodeView.showElement();
     //TODO: After seasonView is ready do proper print of episodes
     selectEpisodeView.render(model.state.episodes);
   } catch (err) {
@@ -109,23 +125,29 @@ const controlSelectedEpisode = function () {
   episodeViews.render(model.state.selection.episodes.selected);
 };
 
-const controlSearchResult = function () {
-  // 1 search query
-  const query = searchView.getQuery();
+const controlSearchResult = async function () {
+  try {
+    // 1 search query
+    const query = searchView.getQuery();
 
-  if (query === "") {
-    showsView.render(model.state.shows);
+    if (query === "") {
+      showsView.render(model.state.shows);
+      model.state.search.results = [];
+      return;
+    }
+
+    if (!query) return;
+    await model.searchResults(query);
+
+    //2 search and rendering search results
+    console.log(model.state.search.results);
+    showsView.render(model.state.search.results);
+    paginationView.render();
+    selectShowView.render(model.state.search.results);
     model.state.search.results = [];
-    return;
+  } catch (err) {
+    console.error(err);
   }
-
-  if (!query) return;
-  model.searchResults(query);
-
-  //2 search and rendering search results
-  showsView.render(model.state.search.results);
-
-  model.state.search.results = [];
 };
 
 //init function which is going to lunch all needed function following the MVC and Observer patter
@@ -133,7 +155,7 @@ const init = function () {
   // there is need to reconsider the way how to join each part of the code
   //because the page is loading two times from search results and window load event
   controlLoadingPageDefault();
-  searchView.addHandlerSearch(controlSearchResult); //!BUG - not to fix because functionality has to be changes
+  searchView.addHandlerSearch(helpers.debounce(controlSearchResult, 1000)); //!BUG - not to fix because functionality has to be changes
 
   selectShowView.addHandlerShows(controlSelectedShow);
   selectEpisodeView.addHandlerEpisode(controlSelectedEpisode);

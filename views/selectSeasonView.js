@@ -1,7 +1,7 @@
 //!TODO There is need to change the name of this class because this one is related to the select menu for select__input dedicated
 // for the episodes of the chosen tv show
 
-class SelectEpisodeView {
+class SelectSeasonView {
   _data;
   _parentElement = document.querySelector(".select__episode__input");
 
@@ -25,14 +25,6 @@ class SelectEpisodeView {
   getQuery() {
     const query = +this._parentElement.value;
     return query;
-  }
-
-  hideElement() {
-    this._parentElement.parentNode.classList.add("hiddenClass");
-  }
-
-  showElement() {
-    this._parentElement.parentNode.classList.remove("hiddenClass");
   }
 
   _generateMarkup() {
@@ -60,4 +52,4 @@ class SelectEpisodeView {
   }
 }
 
-export default new SelectEpisodeView();
+export default new SelectSeasonView();

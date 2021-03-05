@@ -16,7 +16,15 @@ class SelectShowView {
   addHandlerShows(handler) {
     this._parentElement.addEventListener("change", function (e) {
       e.preventDefault();
+
       handler();
+    });
+    //brutal solution to stop refreshing page by enter
+    window.addEventListener("keypress", function (e) {
+      if (e.keyCode == 13) {
+        e.preventDefault();
+        return false;
+      }
     });
   }
 

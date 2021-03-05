@@ -1,6 +1,7 @@
 import { async } from "regenerator-runtime";
 import "regenerator-runtime/runtime";
 import "core-js/stable";
+import * as helpers from "./helpers";
 
 import * as config from "./config.js";
 
@@ -35,9 +36,14 @@ export const state = {
 
 export const importAllShows = async function (apiPageNumber) {
   try {
-    const res = await fetch(
+    const fetchVariable = fetch(
       `https://api.tvmaze.com/shows?page=${apiPageNumber}`
     );
+
+    const res = await Promise.race([
+      fetchVariable,
+      helpers.timeout(config.TIME_OUT),
+    ]);
     const data = await res.json();
     console.log("Fetching model - importAllEpisodes");
     state.shows.push(...data);
@@ -56,7 +62,12 @@ export const importEpisodesOfChosenShow = async function (id) {
     //guard function to the 0 from the id value - id value 0 no exist!
     //this value is used to render shows on the page
     if (id === 0) return;
-    const res = await fetch(`https://api.tvmaze.com/shows/${id}/episodes`);
+    const fetchVariable = fetch(`https://api.tvmaze.com/shows/${id}/episodes`);
+
+    const res = await Promise.race([
+      fetchVariable,
+      helpers.timeout(config.TIME_OUT),
+    ]);
     const data = await res.json();
     console.log(data);
     state.episodes = data.map((item) => item);
@@ -74,17 +85,37 @@ export const importEpisodesOfChosenShow = async function (id) {
 //TODO in next step searchResults() methods is going to be replace by API search option
 // search results for the searchView - ".search".
 //function is looking for the looking word inside the description of episode (summary) and the (name)
-export const searchResults = function (query) {
-  state.search.query = query;
-  const data = state.shows;
+// export const searchResults = function (query) {
+//   state.search.query = query;
+//   const data = state.shows;
 
-  state.search.results = data.filter((episode) => {
-    if (
-      episode.summary.toLowerCase().includes(query.toLowerCase()) ||
-      episode.name.toLowerCase().includes(query.toLowerCase())
-    )
-      return episode;
-  });
+//   state.search.results = data.filter((episode) => {
+//     if (
+//       episode.summary.toLowerCase().includes(query.toLowerCase()) ||
+//       episode.name.toLowerCase().includes(query.toLowerCase())
+//     )
+//       return episode;
+//   });
+// };
+
+export const searchResults = async function (query) {
+  try {
+    state.search.query = query;
+    const fetchVariable = fetch(
+      `http://api.tvmaze.com/search/shows?q=${query}`
+    );
+
+    const res = await Promise.race([
+      fetchVariable,
+      helpers.timeout(config.TIME_OUT),
+    ]);
+    const data = await res.json();
+
+    state.search.results = data.map((item) => item.show);
+
+    if (!res.ok) throw new Error(`I'm coming from searchResults${res.status}`);
+    return data;
+  } catch (err) {}
 };
 
 //!TODO refactor these to function in one
