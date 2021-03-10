@@ -14,18 +14,6 @@ import paginationView from "./views/paginationView.js";
 
 import * as helpers from "./helpers.js";
 
-// const try2 = document.querySelector("h1");
-// console.log(try2);
-// try2.addEventListener(
-//   "click",
-//   helpers.debounce(async function () {
-//     const data = await model.importAllShows(10);
-//     console.log(data);
-//   }, 2000)
-// );
-
-// try2.addEventListener("click", () => console.log("??"));
-
 const controlPagePagination = async function (valueFromEvent) {
   try {
     const query = valueFromEvent;
@@ -150,6 +138,24 @@ const controlSearchResult = async function () {
   }
 };
 
+const clickedShows = async function (e) {
+  try {
+    if (!e.target.dataset.value) return;
+    const query = e.target.dataset.value;
+    await model.importEpisodesOfChosenShow(query);
+
+    paginationView.render();
+    numberOfEpisodesView.render(model.state.episodes, model.state.episodes);
+    model.findSelectedShow(query);
+    episodeViews.render(model.state.episodes);
+    selectEpisodeView.showElement();
+    //TODO: After seasonView is ready do proper print of episodes
+    selectEpisodeView.render(model.state.episodes);
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 //init function which is going to lunch all needed function following the MVC and Observer patter
 const init = function () {
   // there is need to reconsider the way how to join each part of the code
@@ -162,6 +168,7 @@ const init = function () {
 
   //development
   paginationView.addHandlerPagination(controlPagePagination);
+  showsView.addHandlerEpisode(clickedShows);
 };
 
 init();

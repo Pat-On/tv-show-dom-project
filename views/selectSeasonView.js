@@ -1,6 +1,3 @@
-//!TODO There is need to change the name of this class because this one is related to the select menu for select__input dedicated
-// for the episodes of the chosen tv show
-
 class SelectSeasonView {
   _data;
   _parentElement = document.querySelector(".select__episode__input");

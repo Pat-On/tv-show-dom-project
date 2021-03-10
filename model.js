@@ -82,22 +82,6 @@ export const importEpisodesOfChosenShow = async function (id) {
   }
 };
 
-//TODO in next step searchResults() methods is going to be replace by API search option
-// search results for the searchView - ".search".
-//function is looking for the looking word inside the description of episode (summary) and the (name)
-// export const searchResults = function (query) {
-//   state.search.query = query;
-//   const data = state.shows;
-
-//   state.search.results = data.filter((episode) => {
-//     if (
-//       episode.summary.toLowerCase().includes(query.toLowerCase()) ||
-//       episode.name.toLowerCase().includes(query.toLowerCase())
-//     )
-//       return episode;
-//   });
-// };
-
 export const searchResults = async function (query) {
   try {
     state.search.query = query;
@@ -182,3 +166,12 @@ export function getNextOrPrevPage(linkText) {
     return state.pagination.firstPage;
   }
 }
+
+export const clickedShow = function (query) {
+  console.log(query.target);
+  // if
+  // state.selection.shows.query = query;
+  // const data = state.shows;
+
+  // state.selection.shows.selected = data.find((item) => item.id === query);
+};
