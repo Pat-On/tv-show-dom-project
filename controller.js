@@ -7,24 +7,15 @@ import showsView from "./views/showsView.js";
 import numberOfEpisodesView from "./views/numberOfEpisodesView.js";
 import selectEpisodeView from "./views/selectEpisodeView.js";
 import selectShowView from "./views/selectShowView.js";
-import searchView from "./views/searchView.js";
+import searchViewShows from "./views/searchViewShows.js";
+import searchViewEpisodes from "./views/searchViewEpisodes.js";
+
 import episodesView from "./views/episodesView.js";
 
 import paginationView from "./views/paginationView.js";
+import navigationButtons from "./views/navigationButtons.js";
 
 import * as helpers from "./helpers.js";
-
-// const try2 = document.querySelector("h1");
-// console.log(try2);
-// try2.addEventListener(
-//   "click",
-//   helpers.debounce(async function () {
-//     const data = await model.importAllShows(10);
-//     console.log(data);
-//   }, 2000)
-// );
-
-// try2.addEventListener("click", () => console.log("??"));
 
 const controlPagePagination = async function (valueFromEvent) {
   try {
@@ -69,10 +60,14 @@ const controlLoadingPageDefault = async function () {
       model.state.pagination.firstPage,
       model.state.pagination.lastPage
     );
+
     selectShowView.render(pageShows);
     showsView.render(pageShows);
     selectEpisodeView.render(model.state.episodes);
     selectEpisodeView.hideElement();
+
+    navigationButtons.render();
+    navigationButtons.hideElement();
   } catch (err) {
     console.error(err);
   }
@@ -87,6 +82,8 @@ const controlSelectedShow = async function () {
     //!IMPORTANT is this if statement following the MVC pattern? or it need to be added to model?
     if (query === 0) {
       selectEpisodeView.render();
+      searchViewEpisodes.hideElement();
+      searchViewShows.showElement();
       numberOfEpisodesView.render();
       selectEpisodeView.hideElement();
       paginationView.render(
@@ -98,13 +95,17 @@ const controlSelectedShow = async function () {
 
       return;
     }
+    searchViewShows.hideElement();
+    searchViewEpisodes.showElement();
+    navigationButtons.showElement();
     paginationView.render();
-    numberOfEpisodesView.render(model.state.episodes, model.state.episodes);
+
     model.findSelectedShow(query);
     episodeViews.render(model.state.episodes);
     selectEpisodeView.showElement();
     //TODO: After seasonView is ready do proper print of episodes
     selectEpisodeView.render(model.state.episodes);
+    numberOfEpisodesView.render(model.state.episodes, model.state.episodes);
   } catch (err) {
     console.error(err);
   }
@@ -124,11 +125,11 @@ const controlSelectedEpisode = function () {
   model.findSelectedEpisode(query);
   episodeViews.render(model.state.selection.episodes.selected);
 };
-
+//search control response to find shows via API
 const controlSearchResult = async function () {
   try {
     // 1 search query
-    const query = searchView.getQuery();
+    const query = searchViewShows.getQuery();
 
     if (query === "") {
       showsView.render(model.state.shows);
@@ -141,6 +142,7 @@ const controlSearchResult = async function () {
 
     //2 search and rendering search results
     console.log(model.state.search.results);
+
     showsView.render(model.state.search.results);
     paginationView.render();
     selectShowView.render(model.state.search.results);
@@ -150,18 +152,84 @@ const controlSearchResult = async function () {
   }
 };
 
+const controlSearchResultOfEpisodes = function () {
+  const query = searchViewEpisodes.getQuery();
+  console.log(query);
+  if (query === "") {
+    navigationButtons.showElement();
+    paginationView.render();
+    numberOfEpisodesView.render(model.state.episodes, model.state.episodes);
+    model.findSelectedShow(query);
+    episodeViews.render(model.state.episodes);
+    selectEpisodeView.showElement();
+    //TODO: After seasonView is ready do proper print of episodes
+    selectEpisodeView.render(model.state.episodes);
+  }
+  model.searchResultsEpisodesOffline(query);
+  console.log(model.state.search.results);
+  // return;
+  searchViewEpisodes.showElement();
+  navigationButtons.showElement();
+  paginationView.render();
+  numberOfEpisodesView.render(model.state.search.results, model.state.episodes);
+  // model.findSelectedShow(query);
+  episodeViews.render(model.state.search.results);
+  selectEpisodeView.showElement();
+  //TODO: After seasonView is ready do proper print of episodes
+  selectEpisodeView.render(model.state.search.results);
+};
+
+const clickedShows = async function (e) {
+  try {
+    if (!e.target.dataset.value) return;
+    const query = e.target.dataset.value;
+    await model.importEpisodesOfChosenShow(query);
+
+    navigationButtons.showElement();
+    paginationView.render();
+    numberOfEpisodesView.render(model.state.episodes, model.state.episodes);
+    model.findSelectedShow(query);
+    episodeViews.render(model.state.episodes);
+    selectEpisodeView.showElement();
+    //TODO: After seasonView is ready do proper print of episodes
+    selectEpisodeView.render(model.state.episodes);
+    searchViewShows.hideElement();
+    searchViewEpisodes.showElement();
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+const returnButtonEpisodesPage = function () {
+  navigationButtons.hideElement();
+  selectEpisodeView.render();
+  numberOfEpisodesView.render();
+  selectEpisodeView.hideElement();
+  paginationView.render(
+    model.state.pagination.firstPage,
+    model.state.pagination.lastPage
+  );
+  searchViewShows.showElement();
+  searchViewEpisodes.hideElement();
+  selectShowView.render(model.state.pagination.currentShowSlice);
+  showsView.render(model.state.pagination.currentShowSlice);
+};
+
 //init function which is going to lunch all needed function following the MVC and Observer patter
 const init = function () {
   // there is need to reconsider the way how to join each part of the code
   //because the page is loading two times from search results and window load event
   controlLoadingPageDefault();
-  searchView.addHandlerSearch(helpers.debounce(controlSearchResult, 1000)); //!BUG - not to fix because functionality has to be changes
+  searchViewShows.addHandlerSearch(helpers.debounce(controlSearchResult, 1000)); //!BUG - not to fix because functionality has to be changes
+  searchViewEpisodes.addHandlerSearchEpisodes(controlSearchResultOfEpisodes);
 
   selectShowView.addHandlerShows(controlSelectedShow);
   selectEpisodeView.addHandlerEpisode(controlSelectedEpisode);
 
   //development
   paginationView.addHandlerPagination(controlPagePagination);
+  showsView.addHandlerEpisode(clickedShows);
+  navigationButtons.addHandlerReturnButton(returnButtonEpisodesPage);
 };
 
 init();

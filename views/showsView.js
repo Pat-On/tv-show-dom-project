@@ -3,6 +3,7 @@
 class ShowsView {
   _data;
   _parentElement = document.querySelector(".container");
+  // _query;
 
   //render function which taking the fetched data end render the episodes
   render(data) {
@@ -21,9 +22,11 @@ class ShowsView {
 
   //added event handler (load) which is triggering the "first" load of data
   addHandlerEpisode(handler) {
-    window.addEventListener("load", function (e) {
+    this._parentElement.addEventListener("click", function (e) {
+      // if (e.target.value) {
       e.preventDefault();
-      handler();
+      handler(e);
+      // }
     });
   }
 
@@ -42,7 +45,7 @@ class ShowsView {
       //             </div>
       //             `)
       markup.push(`
-          <h2>${item.name}</h2>
+          <h2 data-value=${item.id}>${item.name}</h2>
           <img src="${item.image?.medium}" alt="">
           ${item.summary}
           <p>Rated: ${item.rating?.average}</p>
