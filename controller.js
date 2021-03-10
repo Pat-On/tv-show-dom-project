@@ -82,6 +82,8 @@ const controlSelectedShow = async function () {
     //!IMPORTANT is this if statement following the MVC pattern? or it need to be added to model?
     if (query === 0) {
       selectEpisodeView.render();
+      searchViewEpisodes.hideElement();
+      searchViewShows.showElement();
       numberOfEpisodesView.render();
       selectEpisodeView.hideElement();
       paginationView.render(
@@ -93,15 +95,17 @@ const controlSelectedShow = async function () {
 
       return;
     }
+    searchViewShows.hideElement();
     searchViewEpisodes.showElement();
     navigationButtons.showElement();
     paginationView.render();
-    numberOfEpisodesView.render(model.state.episodes, model.state.episodes);
+
     model.findSelectedShow(query);
     episodeViews.render(model.state.episodes);
     selectEpisodeView.showElement();
     //TODO: After seasonView is ready do proper print of episodes
     selectEpisodeView.render(model.state.episodes);
+    numberOfEpisodesView.render(model.state.episodes, model.state.episodes);
   } catch (err) {
     console.error(err);
   }
@@ -121,7 +125,7 @@ const controlSelectedEpisode = function () {
   model.findSelectedEpisode(query);
   episodeViews.render(model.state.selection.episodes.selected);
 };
-
+//search control response to find shows via API
 const controlSearchResult = async function () {
   try {
     // 1 search query
@@ -138,6 +142,7 @@ const controlSearchResult = async function () {
 
     //2 search and rendering search results
     console.log(model.state.search.results);
+
     showsView.render(model.state.search.results);
     paginationView.render();
     selectShowView.render(model.state.search.results);
@@ -188,6 +193,8 @@ const clickedShows = async function (e) {
     selectEpisodeView.showElement();
     //TODO: After seasonView is ready do proper print of episodes
     selectEpisodeView.render(model.state.episodes);
+    searchViewShows.hideElement();
+    searchViewEpisodes.showElement();
   } catch (err) {
     console.error(err);
   }
@@ -202,6 +209,8 @@ const returnButtonEpisodesPage = function () {
     model.state.pagination.firstPage,
     model.state.pagination.lastPage
   );
+  searchViewShows.showElement();
+  searchViewEpisodes.hideElement();
   selectShowView.render(model.state.pagination.currentShowSlice);
   showsView.render(model.state.pagination.currentShowSlice);
 };
