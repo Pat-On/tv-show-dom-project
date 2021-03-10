@@ -104,7 +104,7 @@ export const searchResults = async function (query) {
 
 export const searchResultsEpisodesOffline = function (query) {
   state.search.query = query;
-  const data = state.shows;
+  const data = state.episodes;
 
   state.search.results = data.filter((episode) => {
     if (

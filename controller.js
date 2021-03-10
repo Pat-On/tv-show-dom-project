@@ -93,6 +93,7 @@ const controlSelectedShow = async function () {
 
       return;
     }
+    searchViewEpisodes.showElement();
     navigationButtons.showElement();
     paginationView.render();
     numberOfEpisodesView.render(model.state.episodes, model.state.episodes);
@@ -146,6 +147,33 @@ const controlSearchResult = async function () {
   }
 };
 
+const controlSearchResultOfEpisodes = function () {
+  const query = searchViewEpisodes.getQuery();
+  console.log(query);
+  if (query === "") {
+    navigationButtons.showElement();
+    paginationView.render();
+    numberOfEpisodesView.render(model.state.episodes, model.state.episodes);
+    model.findSelectedShow(query);
+    episodeViews.render(model.state.episodes);
+    selectEpisodeView.showElement();
+    //TODO: After seasonView is ready do proper print of episodes
+    selectEpisodeView.render(model.state.episodes);
+  }
+  model.searchResultsEpisodesOffline(query);
+  console.log(model.state.search.results);
+  // return;
+  searchViewEpisodes.showElement();
+  navigationButtons.showElement();
+  paginationView.render();
+  numberOfEpisodesView.render(model.state.search.results, model.state.episodes);
+  // model.findSelectedShow(query);
+  episodeViews.render(model.state.search.results);
+  selectEpisodeView.showElement();
+  //TODO: After seasonView is ready do proper print of episodes
+  selectEpisodeView.render(model.state.search.results);
+};
+
 const clickedShows = async function (e) {
   try {
     if (!e.target.dataset.value) return;
@@ -184,6 +212,7 @@ const init = function () {
   //because the page is loading two times from search results and window load event
   controlLoadingPageDefault();
   searchViewShows.addHandlerSearch(helpers.debounce(controlSearchResult, 1000)); //!BUG - not to fix because functionality has to be changes
+  searchViewEpisodes.addHandlerSearchEpisodes(controlSearchResultOfEpisodes);
 
   selectShowView.addHandlerShows(controlSelectedShow);
   selectEpisodeView.addHandlerEpisode(controlSelectedEpisode);

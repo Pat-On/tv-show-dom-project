@@ -11,7 +11,7 @@ class searchViewShows {
     return query;
   }
   //publisher
-  addHandlerSearch(handler) {
+  addHandlerSearchEpisodes(handler) {
     // console.log(this._parentElement);
     this._parentElement.addEventListener("input", function (e) {
       e.preventDefault();
