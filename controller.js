@@ -11,6 +11,7 @@ import searchView from "./views/searchView.js";
 import episodesView from "./views/episodesView.js";
 
 import paginationView from "./views/paginationView.js";
+import navigationButtons from "./views/navigationButtons.js";
 
 import * as helpers from "./helpers.js";
 
@@ -61,6 +62,9 @@ const controlLoadingPageDefault = async function () {
     showsView.render(pageShows);
     selectEpisodeView.render(model.state.episodes);
     selectEpisodeView.hideElement();
+
+    navigationButtons.render();
+    navigationButtons.hideElement();
   } catch (err) {
     console.error(err);
   }
@@ -86,6 +90,7 @@ const controlSelectedShow = async function () {
 
       return;
     }
+    navigationButtons.showElement();
     paginationView.render();
     numberOfEpisodesView.render(model.state.episodes, model.state.episodes);
     model.findSelectedShow(query);
@@ -144,6 +149,7 @@ const clickedShows = async function (e) {
     const query = e.target.dataset.value;
     await model.importEpisodesOfChosenShow(query);
 
+    navigationButtons.showElement();
     paginationView.render();
     numberOfEpisodesView.render(model.state.episodes, model.state.episodes);
     model.findSelectedShow(query);
@@ -154,6 +160,19 @@ const clickedShows = async function (e) {
   } catch (err) {
     console.error(err);
   }
+};
+
+const returnButtonEpisodesPage = function () {
+  navigationButtons.hideElement();
+  selectEpisodeView.render();
+  numberOfEpisodesView.render();
+  selectEpisodeView.hideElement();
+  paginationView.render(
+    model.state.pagination.firstPage,
+    model.state.pagination.lastPage
+  );
+  selectShowView.render(model.state.pagination.currentShowSlice);
+  showsView.render(model.state.pagination.currentShowSlice);
 };
 
 //init function which is going to lunch all needed function following the MVC and Observer patter
@@ -169,6 +188,7 @@ const init = function () {
   //development
   paginationView.addHandlerPagination(controlPagePagination);
   showsView.addHandlerEpisode(clickedShows);
+  navigationButtons.addHandlerReturnButton(returnButtonEpisodesPage);
 };
 
 init();
