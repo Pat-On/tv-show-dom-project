@@ -1,8 +1,8 @@
 // Description: class SearchView is responsible for a search bar
 
-class SearchView {
+class searchViewEpisodes {
   _data;
-  _parentElement = document.querySelector(".search");
+  _parentElement = document.querySelector(".search--shows");
 
   // I need to make this part of code work:
   // getting query from
@@ -18,6 +18,15 @@ class SearchView {
       handler();
     });
   }
+
+  hideElement() {
+    this._parentElement.classList.add("hiddenClass");
+  }
+
+  showElement() {
+    this._parentElement.classList.remove("hiddenClass");
+  }
+
   _clearInput() {
     this._parentElement.querySelector(".search__field").value = "";
   }
@@ -27,4 +36,4 @@ class SearchView {
   }
 }
 
-export default new SearchView();
+export default new searchViewEpisodes();

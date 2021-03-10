@@ -81,7 +81,7 @@ export const importEpisodesOfChosenShow = async function (id) {
     throw err;
   }
 };
-
+//function is used to find the shows via API
 export const searchResults = async function (query) {
   try {
     state.search.query = query;
@@ -100,6 +100,19 @@ export const searchResults = async function (query) {
     if (!res.ok) throw new Error(`I'm coming from searchResults${res.status}`);
     return data;
   } catch (err) {}
+};
+
+export const searchResultsEpisodesOffline = function (query) {
+  state.search.query = query;
+  const data = state.shows;
+
+  state.search.results = data.filter((episode) => {
+    if (
+      episode.summary.toLowerCase().includes(query.toLowerCase()) ||
+      episode.name.toLowerCase().includes(query.toLowerCase())
+    )
+      return episode;
+  });
 };
 
 //!TODO refactor these to function in one

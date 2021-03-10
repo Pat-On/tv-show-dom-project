@@ -7,7 +7,9 @@ import showsView from "./views/showsView.js";
 import numberOfEpisodesView from "./views/numberOfEpisodesView.js";
 import selectEpisodeView from "./views/selectEpisodeView.js";
 import selectShowView from "./views/selectShowView.js";
-import searchView from "./views/searchView.js";
+import searchViewShows from "./views/searchViewShows.js";
+import searchViewEpisodes from "./views/searchViewEpisodes.js";
+
 import episodesView from "./views/episodesView.js";
 
 import paginationView from "./views/paginationView.js";
@@ -58,6 +60,7 @@ const controlLoadingPageDefault = async function () {
       model.state.pagination.firstPage,
       model.state.pagination.lastPage
     );
+
     selectShowView.render(pageShows);
     showsView.render(pageShows);
     selectEpisodeView.render(model.state.episodes);
@@ -121,7 +124,7 @@ const controlSelectedEpisode = function () {
 const controlSearchResult = async function () {
   try {
     // 1 search query
-    const query = searchView.getQuery();
+    const query = searchViewShows.getQuery();
 
     if (query === "") {
       showsView.render(model.state.shows);
@@ -180,7 +183,7 @@ const init = function () {
   // there is need to reconsider the way how to join each part of the code
   //because the page is loading two times from search results and window load event
   controlLoadingPageDefault();
-  searchView.addHandlerSearch(helpers.debounce(controlSearchResult, 1000)); //!BUG - not to fix because functionality has to be changes
+  searchViewShows.addHandlerSearch(helpers.debounce(controlSearchResult, 1000)); //!BUG - not to fix because functionality has to be changes
 
   selectShowView.addHandlerShows(controlSelectedShow);
   selectEpisodeView.addHandlerEpisode(controlSelectedEpisode);
