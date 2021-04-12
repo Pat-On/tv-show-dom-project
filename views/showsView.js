@@ -9,13 +9,10 @@ class ShowsView {
   render(data) {
     // temporary solution -> if data is not array put it inside the array!
     this._data = Array.isArray(data) ? data : [data];
-    // this._data = data;
-    console.log("?");
     // rendering the episodes on the main page
 
-    // console.log(data);
     const markup = this._generateMarkup().join("");
-    console.log(markup);
+
     this._clear();
     this._parentElement.insertAdjacentHTML("afterbegin", markup);
   }

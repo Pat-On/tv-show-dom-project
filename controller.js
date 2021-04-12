@@ -55,7 +55,6 @@ const controlLoadingPageDefault = async function () {
     const pageShows = await model.selectPage(
       model.state.pagination.pageToFetchToAPI
     );
-    console.log(pageShows.length);
     paginationView.render(
       model.state.pagination.firstPage,
       model.state.pagination.lastPage

@@ -11,13 +11,13 @@ class EpisodesView {
     //   this._clear();
     //   return;
     // }
-    console.log(data);
+
     this._data = Array.isArray(data) ? data : [data];
 
     // rendering the episodes on the main page
 
     const markup = this._generateMarkup().join("");
-    console.log(markup);
+
     this._clear();
     this._parentElement.insertAdjacentHTML("afterbegin", markup);
   }
@@ -49,7 +49,6 @@ class EpisodesView {
                   </div>
                   `);
     });
-    console.log(markup);
     return markup;
   }
 
