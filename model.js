@@ -45,7 +45,6 @@ export const importAllShows = async function (apiPageNumber) {
       helpers.timeout(config.TIME_OUT),
     ]);
     const data = await res.json();
-    console.log("Fetching model - importAllEpisodes");
     state.shows.push(...data);
 
     if (!res.ok) throw new Error(`I'm coming from importAllShows${res.status}`);
@@ -144,7 +143,6 @@ export async function selectPage(pageNumber) {
 
   //checking which shows is going to be fetched base on endIndex and API_PER_PAGE
   if (endIndex > state.shows.length) {
-    console.log("fetch");
     //!TODO FIX FETCH
     await importAllShows(Math.floor(endIndex / config.API_PER_PAGE));
   }

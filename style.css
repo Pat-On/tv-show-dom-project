@@ -4,7 +4,7 @@
 }
 
 body {
-  
+  background-color: lightgray;
 }
 
 /* titlePage */
@@ -99,20 +99,14 @@ body {
 
 /* Media Query */
 @media  (max-width: 480px) and (min-width: 320px) {
-body {
-  background-color: aqua;
-}
+
 }
 
 @media (max-width: 700px) and (min-width: 481px){
-body {
-  background-color: burlywood;
-}
+
 }
 @media (max-width: 1000px) and (min-width: 701px){
-body {
-  background-color: chartreuse;
-}
+
 
 /* search episodes and shows*/
 
@@ -160,9 +154,7 @@ body {
 
 }
 @media (min-width: 1001px) {
-body {
-  background-color: lightgray;
-}
+
 /* search episodes and shows*/
 
 .search__field{
