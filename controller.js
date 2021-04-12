@@ -92,7 +92,7 @@ const controlSelectedShow = async function () {
       );
       selectShowView.render(model.state.pagination.currentShowSlice);
       showsView.render(model.state.pagination.currentShowSlice);
-
+      navigationButtons.hideElement();
       return;
     }
     searchViewShows.hideElement();

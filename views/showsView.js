@@ -15,7 +15,7 @@ class ShowsView {
 
     // console.log(data);
     const markup = this._generateMarkup().join("");
-    // console.log(markup);
+    console.log(markup);
     this._clear();
     this._parentElement.insertAdjacentHTML("afterbegin", markup);
   }
@@ -34,7 +34,7 @@ class ShowsView {
   _generateMarkup() {
     const markup = [];
     const shows = this._data;
-    console.log(shows);
+    // console.log(shows);
     shows.forEach((item) => {
       // markup.push(`
       //             <div class="episode">
@@ -45,6 +45,7 @@ class ShowsView {
       //             </div>
       //             `)
       markup.push(`
+      <div class="shows">
           <h2 data-value=${item.id}>${item.name}</h2>
           <img src="${item.image?.medium}" alt="">
           ${item.summary}
@@ -53,7 +54,7 @@ class ShowsView {
           <p>Runtime: ${item.runtime} minutes</p>
           <a href=${item.url}>Check the source</a>
           </div>
-          <div class="episode">
+          </ div  >
                  `);
     });
     return markup;

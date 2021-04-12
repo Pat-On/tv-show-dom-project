@@ -1,7 +1,86 @@
-#root {
-  color: red;
+* {
+  margin: 0;
+  padding: 0;
 }
 
+body {
+  
+}
+
+/* titlePage */
+.titlePage {
+  text-align: center;
+  padding: 2% 0 2% 0;
+}
+
+/* search episodes and shows*/
+
+.search__field{
+  width: 90%;
+   height: 7vh;
+  text-align: center;
+}
+
+.search--shows, .search--episodes  {
+  width: 100%;
+  text-align: center;
+}
+
+.number__of__episodes {
+  display: block;
+}
+
+/* select menu - shows and episodes */
+
+.label__for__shows, .label__for__episodes {
+  margin: auto;
+  text-align: center;
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+}
+
+.select__show__input, .select__episode__input  {
+  width: 100%;
+  height: 7vh;
+  margin: auto;
+}
+
+/* navigation << 1 2 3 4 5 >> */
+.nav--top, .nav--bottom {
+  width: 100%;
+  padding: 3% 0 3% 0;
+}
+
+.nav_ul--top, .nav_ul--bottom {
+  width: 100%;
+  text-align: center;
+}
+
+.nav_ul--top > li {
+  display: inline;
+  margin: auto;
+  padding: 0 3% 0 3%;
+}
+
+.nav_ul--bottom > li {
+  display: inline;
+  padding: 0 3% 0 3%;
+}
+
+/* main shows and episodes display */
+.container {
+
+}
+
+.episode {
+  background-color: blue;
+}
+
+
+
+/* class to hide elements on the page */
 .hiddenClass {
   display: none;
 }
+
