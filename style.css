@@ -77,7 +77,7 @@ body {
   margin: auto;
 }
 
-.shows {
+.shows, .episode {
   margin: 2% 0 2% 0;
   text-align: center;
   border: 1px solid black;
@@ -87,6 +87,9 @@ body {
   font-size: 18px;
 }
 
+.episode > p {
+  font-size: 18px;
+}
 
 
 /* class to hide elements on the page */
@@ -142,6 +145,19 @@ body {
   margin: auto;
 }
 
+/* main shows and episodes display */
+.container {
+  width: 95%;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  margin: auto;
+}
+
+.shows, .episode {
+  width: 45%;
+}
+
 }
 @media (min-width: 1001px) {
 body {
@@ -177,4 +193,18 @@ body {
   height: 7.5vh;
   margin: auto;
 }
+
+/* main shows and episodes display */
+.container {
+  width: 85%;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  margin: auto;
+}
+
+.shows, .episode {
+  width: 45%;
+}
+
 }
